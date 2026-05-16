@@ -6,6 +6,24 @@ async function getClient() {
     const { neon } = await import('@neondatabase/serverless')
     db = neon(process.env.POSTGRES_URL || process.env.POSTGRES_URL_NON_POOLING)
     dbType = 'pg'
+    // Init tables on first run
+    await db(`CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      username TEXT NOT NULL UNIQUE,
+      email TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT NOW()
+    )`)
+    await db(`CREATE TABLE IF NOT EXISTS reviews (
+      id SERIAL PRIMARY KEY,
+      series_id INTEGER NOT NULL,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      username TEXT NOT NULL,
+      rating INTEGER NOT NULL CHECK(rating >= 1 AND rating <= 5),
+      comment TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT NOW()
+    )`)
+    await db(`CREATE INDEX IF NOT EXISTS idx_reviews_series ON reviews(series_id)`)
   } else {
     const { default: Database } = await import('better-sqlite3')
     const path = await import('path')
@@ -50,8 +68,6 @@ export async function query(sql, params = []) {
   // SQLite
   const isSelect = upperSql.startsWith('SELECT')
   const isReturning = upperSql.includes('RETURNING')
-
-  // Convert $1, $2, ... to ? for SQLite
   const sqliteSql = sql.replace(/\$\d+/g, '?')
 
   if (isSelect) {
@@ -59,7 +75,6 @@ export async function query(sql, params = []) {
   }
 
   if (isReturning) {
-    // SQLite doesn't support RETURNING — strip it, insert, then SELECT the row
     const returningIdx = upperSql.indexOf('RETURNING')
     const insertSqlPart = sql.substring(0, returningIdx).trim()
     const returningCols = sql.substring(returningIdx + 9).trim()
@@ -73,7 +88,6 @@ export async function query(sql, params = []) {
     return { rows: [{ id }] }
   }
 
-  // Plain INSERT/UPDATE/DELETE
   const result = db.prepare(sqliteSql).run(...params)
   return { rows: [], changes: result.changes, lastInsertRowid: result.lastInsertRowid }
 }
