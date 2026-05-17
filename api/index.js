@@ -195,7 +195,9 @@ app.delete('/api/series/:id', authMiddleware, adminMiddleware, async (req, res) 
 // ─── Cron Routes ───
 
 app.get('/api/cron/update-aired-episodes', async (req, res) => {
-  if (!process.env.CRON_SECRET || req.query.secret !== process.env.CRON_SECRET) {
+  const isVercelCron = req.headers['x-vercel-cron'] === '1'
+  const hasSecret = process.env.CRON_SECRET && req.query.secret === process.env.CRON_SECRET
+  if (!isVercelCron && !hasSecret) {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 

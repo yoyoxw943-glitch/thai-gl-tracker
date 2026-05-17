@@ -93,7 +93,9 @@ function setupSeriesRoutes(app) {
 
   // Cron: update aired episodes for all airing series
   app.get('/api/cron/update-aired-episodes', (req, res) => {
-    if (!process.env.CRON_SECRET || req.query.secret !== process.env.CRON_SECRET) {
+    const isVercelCron = req.headers['x-vercel-cron'] === '1'
+    const hasSecret = process.env.CRON_SECRET && req.query.secret === process.env.CRON_SECRET
+    if (!isVercelCron && !hasSecret) {
       return res.status(401).json({ error: 'Unauthorized' })
     }
 
