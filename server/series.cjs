@@ -90,6 +90,27 @@ function setupSeriesRoutes(app) {
     db.prepare('DELETE FROM series WHERE id = ?').run(req.params.id)
     res.json({ success: true })
   })
+
+  // Cron: update aired episodes for all airing series
+  app.get('/api/cron/update-aired-episodes', (req, res) => {
+    if (!process.env.CRON_SECRET || req.query.secret !== process.env.CRON_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' })
+    }
+
+    const db = getDb()
+    const rows = db.prepare("SELECT * FROM series WHERE status = 'airing'").all()
+    let updatedCount = 0
+
+    for (const row of rows) {
+      const computed = calcAired(row)
+      if (computed !== row.aired_episodes) {
+        db.prepare('UPDATE series SET aired_episodes = ? WHERE id = ?').run(computed, row.id)
+        updatedCount++
+      }
+    }
+
+    res.json({ success: true, updated: updatedCount, total: rows.length, timestamp: new Date().toISOString() })
+  })
 }
 
 // Convert DB row to camelCase for frontend

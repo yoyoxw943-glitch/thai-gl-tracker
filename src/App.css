@@ -1148,6 +1148,20 @@ button {
   opacity: 0.8;
 }
 
+/* ========== Refresh indicator ========== */
+.refresh-indicator {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+  font-size: 0.8em;
+  opacity: 0.5;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* ========== Responsive additions ========== */
 @media (max-width: 768px) {
   .app-header {

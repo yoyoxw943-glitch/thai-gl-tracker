@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useCallback } from 'react'
 import { filterSeries, getAvailableMonths, getAvailablePlatforms, getRecentThreeMonths } from './utils/filterSeries'
 import fallbackData from './data/series.json'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import { usePolling } from './utils/usePolling'
 import Header from './components/Header'
 import FilterBar from './components/FilterBar'
 import SeriesCard from './components/SeriesCard'
@@ -25,9 +26,10 @@ function AppContent() {
   const [statusFilter, setStatusFilter] = useState('')
   const [seriesData, setSeriesData] = useState(fallbackData)
   const [showAdmin, setShowAdmin] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
 
-  // Fetch series from API on mount
-  useEffect(() => {
+  const fetchSeriesData = useCallback(() => {
+    setRefreshing(true)
     fetch('/api/series')
       .then((r) => r.json())
       .then((data) => {
@@ -38,7 +40,14 @@ function AppContent() {
       .catch(() => {
         // Fallback to static JSON already set
       })
+      .finally(() => setRefreshing(false))
   }, [])
+
+  useEffect(() => {
+    fetchSeriesData()
+  }, [fetchSeriesData])
+
+  usePolling(fetchSeriesData, 300000)
 
   // Hash-based routing
   const checkHash = useCallback(() => {
@@ -120,7 +129,7 @@ function AppContent() {
       />
 
       <section className="series-info">
-        <span className="series-count">共 {displaySeries.length} 部剧集</span>
+        <span className="series-count">共 {displaySeries.length} 部剧集{refreshing && <span className="refresh-indicator" title="刷新中..."> ⟳</span>}</span>
         {(selectedPlatforms.length || selectedMonths.length || statusFilter) ? (
           <span className="filter-hint">（已筛选）</span>
         ) : (

@@ -192,6 +192,32 @@ app.delete('/api/series/:id', authMiddleware, adminMiddleware, async (req, res) 
   }
 })
 
+// ─── Cron Routes ───
+
+app.get('/api/cron/update-aired-episodes', async (req, res) => {
+  if (!process.env.CRON_SECRET || req.query.secret !== process.env.CRON_SECRET) {
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
+
+  try {
+    const result = await query("SELECT * FROM series WHERE status = 'airing'")
+    let updatedCount = 0
+
+    for (const row of result.rows) {
+      const computed = calcAired(row)
+      if (computed !== row.aired_episodes) {
+        await query('UPDATE series SET aired_episodes = $1 WHERE id = $2', [computed, row.id])
+        updatedCount++
+      }
+    }
+
+    res.json({ success: true, updated: updatedCount, total: result.rows.length, timestamp: new Date().toISOString() })
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({ error: 'Cron job failed' })
+  }
+})
+
 function formatSeries(row) {
   return {
     id: row.id,
