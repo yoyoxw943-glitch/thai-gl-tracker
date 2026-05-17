@@ -103,7 +103,7 @@ function formatSeries(row) {
     platform: row.platform,
     startDate: row.start_date,
     totalEpisodes: row.total_episodes,
-    airedEpisodes: row.aired_episodes,
+    airedEpisodes: calcAired(row),
     updateDay: row.update_day,
     cpName: row.cp_name,
     synopsis: row.synopsis,
@@ -111,6 +111,22 @@ function formatSeries(row) {
     watchLinks: typeof row.watch_links === 'string' ? JSON.parse(row.watch_links) : row.watch_links,
     created_at: row.created_at,
   }
+}
+
+function calcAired(row) {
+  if (row.status !== 'airing' || !row.start_date || !row.update_day) return row.aired_episodes
+  const start = new Date(row.start_date)
+  const today = new Date()
+  if (today < start) return 0
+
+  const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+  const targetDay = dayNames.indexOf(row.update_day)
+  if (targetDay === -1) return row.aired_episodes
+
+  const firstAir = new Date(start)
+  firstAir.setDate(start.getDate() + (targetDay - start.getDay() + 7) % 7)
+  const diffDays = Math.floor((today - firstAir) / (1000 * 60 * 60 * 24))
+  return Math.min(Math.max(Math.floor(diffDays / 7) + 1, 0), row.total_episodes)
 }
 
 module.exports = { setupSeriesRoutes }
