@@ -1,11 +1,12 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { filterSeries, getAvailableMonths, getAvailablePlatforms, getRecentThreeMonths } from './utils/filterSeries'
-import seriesData from './data/series.json'
+import fallbackData from './data/series.json'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import Header from './components/Header'
 import FilterBar from './components/FilterBar'
 import SeriesCard from './components/SeriesCard'
 import AuthModal from './components/AuthModal'
+import AdminPage from './components/AdminPage'
 import './App.css'
 
 export default function App() {
@@ -17,21 +18,48 @@ export default function App() {
 }
 
 function AppContent() {
-  const { user, loading, logout } = useAuth()
+  const { user, isAdmin, loading, logout } = useAuth()
   const [showAuth, setShowAuth] = useState(false)
   const [selectedPlatforms, setSelectedPlatforms] = useState([])
   const [selectedMonths, setSelectedMonths] = useState([])
   const [statusFilter, setStatusFilter] = useState('')
+  const [seriesData, setSeriesData] = useState(fallbackData)
+  const [showAdmin, setShowAdmin] = useState(false)
 
-  const months = useMemo(() => getAvailableMonths(seriesData), [])
-  const platforms = useMemo(() => getAvailablePlatforms(seriesData), [])
+  // Fetch series from API on mount
+  useEffect(() => {
+    fetch('/api/series')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.series && data.series.length > 0) {
+          setSeriesData(data.series)
+        }
+      })
+      .catch(() => {
+        // Fallback to static JSON already set
+      })
+  }, [])
+
+  // Hash-based routing
+  const checkHash = useCallback(() => {
+    setShowAdmin(window.location.hash === '#admin')
+  }, [])
+
+  useEffect(() => {
+    checkHash()
+    window.addEventListener('hashchange', checkHash)
+    return () => window.removeEventListener('hashchange', checkHash)
+  }, [checkHash])
+
+  const months = useMemo(() => getAvailableMonths(seriesData), [seriesData])
+  const platforms = useMemo(() => getAvailablePlatforms(seriesData), [seriesData])
 
   const filtered = useMemo(
     () => filterSeries(seriesData, { platforms: selectedPlatforms, months: selectedMonths, status: statusFilter }),
-    [selectedPlatforms, selectedMonths, statusFilter]
+    [seriesData, selectedPlatforms, selectedMonths, statusFilter]
   )
 
-  const recentSeries = useMemo(() => getRecentThreeMonths(seriesData), [])
+  const recentSeries = useMemo(() => getRecentThreeMonths(seriesData), [seriesData])
 
   const togglePlatform = (p) => {
     setSelectedPlatforms((prev) =>
@@ -49,6 +77,15 @@ function AppContent() {
     ? filtered
     : recentSeries
 
+  // Admin page
+  if (showAdmin && isAdmin) {
+    return (
+      <div className="app">
+        <AdminPage onClose={() => { window.location.hash = '' }} />
+      </div>
+    )
+  }
+
   return (
     <div className="app">
       <div className="app-header">
@@ -57,6 +94,7 @@ function AppContent() {
           {loading ? null : user ? (
             <div className="user-menu">
               <span className="user-name">{user.username}</span>
+              {isAdmin && <a href="#admin" className="admin-link">管理</a>}
               <button className="user-btn" onClick={logout}>退出</button>
             </div>
           ) : (

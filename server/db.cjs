@@ -22,6 +22,7 @@ function initTables() {
       username TEXT NOT NULL UNIQUE,
       email TEXT NOT NULL UNIQUE,
       password_hash TEXT NOT NULL,
+      is_admin INTEGER NOT NULL DEFAULT 0,
       created_at TEXT DEFAULT (datetime('now'))
     );
 
@@ -37,6 +38,24 @@ function initTables() {
     );
 
     CREATE INDEX IF NOT EXISTS idx_reviews_series ON reviews(series_id);
+
+    CREATE TABLE IF NOT EXISTS series (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title_zh TEXT NOT NULL,
+      title_en TEXT NOT NULL DEFAULT '',
+      title_th TEXT NOT NULL DEFAULT '',
+      poster TEXT NOT NULL DEFAULT '',
+      platform TEXT NOT NULL,
+      start_date TEXT NOT NULL,
+      total_episodes INTEGER NOT NULL DEFAULT 0,
+      aired_episodes INTEGER NOT NULL DEFAULT 0,
+      update_day TEXT NOT NULL DEFAULT '',
+      cp_name TEXT NOT NULL DEFAULT '',
+      synopsis TEXT NOT NULL DEFAULT '',
+      status TEXT NOT NULL DEFAULT 'upcoming',
+      watch_links TEXT NOT NULL DEFAULT '[]',
+      created_at TEXT DEFAULT (datetime('now'))
+    );
   `)
 }
 

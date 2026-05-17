@@ -4,6 +4,7 @@ const cors = require('cors')
 const path = require('path')
 const { setupAuthRoutes } = require('./auth.cjs')
 const { setupReviewRoutes } = require('./reviews.cjs')
+const { setupSeriesRoutes } = require('./series.cjs')
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -13,6 +14,7 @@ app.use(express.json())
 
 setupAuthRoutes(app)
 setupReviewRoutes(app)
+setupSeriesRoutes(app)
 
 // Serve static build in production
 if (process.env.NODE_ENV === 'production') {

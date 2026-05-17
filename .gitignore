@@ -25,6 +25,9 @@ dist-ssr
 
 # Server database
 server/data.db
+server/data.db-shm
+server/data.db-wal
 
 # Environment
 .env
+.vercel

@@ -24,6 +24,15 @@ function authMiddleware(req, res, next) {
   }
 }
 
+function adminMiddleware(req, res, next) {
+  const db = getDb()
+  const user = db.prepare('SELECT is_admin FROM users WHERE id = ?').get(req.user.id)
+  if (!user || !user.is_admin) {
+    return res.status(403).json({ error: '需要管理员权限' })
+  }
+  next()
+}
+
 function optionalAuth(req, res, next) {
   const header = req.headers.authorization
   if (header && header.startsWith('Bearer ')) {
@@ -55,11 +64,15 @@ function setupAuthRoutes(app) {
       return res.status(409).json({ error: '用户名或邮箱已被注册' })
     }
 
+    // First user becomes admin
+    const total = db.prepare('SELECT COUNT(*) as count FROM users').get()
+    const isAdmin = total.count === 0
+
     const hash = bcrypt.hashSync(password, 10)
-    const result = db.prepare('INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)').run(username, email, hash)
+    const result = db.prepare('INSERT INTO users (username, email, password_hash, is_admin) VALUES (?, ?, ?, ?)').run(username, email, hash, isAdmin ? 1 : 0)
     const token = generateToken({ id: result.lastInsertRowid, username })
 
-    res.json({ token, user: { id: result.lastInsertRowid, username, email } })
+    res.json({ token, user: { id: result.lastInsertRowid, username, email, is_admin: isAdmin } })
   })
 
   // Login
@@ -76,16 +89,16 @@ function setupAuthRoutes(app) {
     }
 
     const token = generateToken(user)
-    res.json({ token, user: { id: user.id, username: user.username, email: user.email } })
+    res.json({ token, user: { id: user.id, username: user.username, email: user.email, is_admin: !!user.is_admin } })
   })
 
   // Get current user
   app.get('/api/auth/me', authMiddleware, (req, res) => {
     const db = getDb()
-    const user = db.prepare('SELECT id, username, email, created_at FROM users WHERE id = ?').get(req.user.id)
+    const user = db.prepare('SELECT id, username, email, is_admin, created_at FROM users WHERE id = ?').get(req.user.id)
     if (!user) return res.status(404).json({ error: '用户不存在' })
     res.json({ user })
   })
 }
 
-module.exports = { setupAuthRoutes, authMiddleware, optionalAuth }
+module.exports = { setupAuthRoutes, authMiddleware, adminMiddleware, optionalAuth }

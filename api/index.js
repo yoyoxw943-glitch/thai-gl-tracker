@@ -28,6 +28,19 @@ function authMiddleware(req, res, next) {
   }
 }
 
+async function adminMiddleware(req, res, next) {
+  try {
+    const result = await query('SELECT is_admin FROM users WHERE id = $1', [req.user.id])
+    const user = result.rows[0]
+    if (!user || !user.is_admin) {
+      return res.status(403).json({ error: '需要管理员权限' })
+    }
+    next()
+  } catch {
+    res.status(500).json({ error: '权限验证失败' })
+  }
+}
+
 function optionalAuth(req, res, next) {
   const header = req.headers.authorization
   if (header && header.startsWith('Bearer ')) {
@@ -48,14 +61,18 @@ app.post('/api/auth/register', async (req, res) => {
     const exist = await query('SELECT id FROM users WHERE email = $1 OR username = $2', [email, username])
     if (exist.rows.length > 0) return res.status(409).json({ error: '用户名或邮箱已被注册' })
 
+    // First user becomes admin
+    const total = await query('SELECT COUNT(*)::int as count FROM users')
+    const isAdmin = total.rows[0]?.count === 0
+
     const hash = bcrypt.hashSync(password, 10)
     const result = await query(
-      'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id',
-      [username, email, hash]
+      'INSERT INTO users (username, email, password_hash, is_admin) VALUES ($1, $2, $3, $4) RETURNING *',
+      [username, email, hash, isAdmin]
     )
-    const id = result.rows[0].id
-    const token = generateToken({ id, username })
-    res.json({ token, user: { id, username, email } })
+    const user = result.rows[0]
+    const token = generateToken({ id: user.id, username: user.username })
+    res.json({ token, user: { id: user.id, username: user.username, email: user.email, is_admin: user.is_admin } })
   } catch (e) {
     console.error(e)
     res.status(500).json({ error: '注册失败' })
@@ -74,7 +91,7 @@ app.post('/api/auth/login', async (req, res) => {
     }
 
     const token = generateToken(user)
-    res.json({ token, user: { id: user.id, username: user.username, email: user.email } })
+    res.json({ token, user: { id: user.id, username: user.username, email: user.email, is_admin: user.is_admin } })
   } catch (e) {
     console.error(e)
     res.status(500).json({ error: '登录失败' })
@@ -83,7 +100,7 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.get('/api/auth/me', authMiddleware, async (req, res) => {
   try {
-    const result = await query('SELECT id, username, email, created_at FROM users WHERE id = $1', [req.user.id])
+    const result = await query('SELECT id, username, email, is_admin, created_at FROM users WHERE id = $1', [req.user.id])
     const user = result.rows[0]
     if (!user) return res.status(404).json({ error: '用户不存在' })
     res.json({ user })
@@ -91,6 +108,109 @@ app.get('/api/auth/me', authMiddleware, async (req, res) => {
     res.status(500).json({ error: '获取用户信息失败' })
   }
 })
+
+// ─── Series Routes ───
+
+app.get('/api/series', async (req, res) => {
+  try {
+    const result = await query('SELECT * FROM series ORDER BY start_date DESC')
+    res.json({ series: result.rows.map(formatSeries) })
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({ error: '获取剧集列表失败' })
+  }
+})
+
+app.get('/api/series/:id', async (req, res) => {
+  try {
+    const result = await query('SELECT * FROM series WHERE id = $1', [req.params.id])
+    if (result.rows.length === 0) return res.status(404).json({ error: '剧集不存在' })
+    res.json({ series: formatSeries(result.rows[0]) })
+  } catch (e) {
+    res.status(500).json({ error: '获取剧集失败' })
+  }
+})
+
+app.post('/api/series', authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const { titleZh, titleEn, titleTh, poster, platform, startDate,
+      totalEpisodes, airedEpisodes, updateDay, cpName, synopsis, status, watchLinks } = req.body
+    if (!titleZh || !platform || !startDate) {
+      return res.status(400).json({ error: '标题、平台和开播日期为必填项' })
+    }
+    const result = await query(`
+      INSERT INTO series (title_zh, title_en, title_th, poster, platform, start_date,
+        total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *
+    `, [titleZh, titleEn || '', titleTh || '', poster || '', platform, startDate,
+      totalEpisodes || 0, airedEpisodes || 0, updateDay || '', cpName || '', synopsis || '',
+      status || 'upcoming', JSON.stringify(watchLinks || [])])
+    res.status(201).json({ series: formatSeries(result.rows[0]) })
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({ error: '添加剧集失败' })
+  }
+})
+
+app.put('/api/series/:id', authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const r = await query('SELECT * FROM series WHERE id = $1', [req.params.id])
+    if (r.rows.length === 0) return res.status(404).json({ error: '剧集不存在' })
+    const existing = r.rows[0]
+    const { titleZh, titleEn, titleTh, poster, platform, startDate,
+      totalEpisodes, airedEpisodes, updateDay, cpName, synopsis, status, watchLinks } = req.body
+    const result = await query(`
+      UPDATE series SET title_zh=$1, title_en=$2, title_th=$3, poster=$4, platform=$5,
+        start_date=$6, total_episodes=$7, aired_episodes=$8, update_day=$9,
+        cp_name=$10, synopsis=$11, status=$12, watch_links=$13
+      WHERE id=$14 RETURNING *
+    `, [
+      titleZh ?? existing.title_zh, titleEn ?? existing.title_en,
+      titleTh ?? existing.title_th, poster ?? existing.poster,
+      platform ?? existing.platform, startDate ?? existing.start_date,
+      totalEpisodes ?? existing.total_episodes, airedEpisodes ?? existing.aired_episodes,
+      updateDay ?? existing.update_day, cpName ?? existing.cp_name,
+      synopsis ?? existing.synopsis, status ?? existing.status,
+      watchLinks ? JSON.stringify(watchLinks) : existing.watch_links,
+      req.params.id,
+    ])
+    res.json({ series: formatSeries(result.rows[0]) })
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({ error: '更新剧集失败' })
+  }
+})
+
+app.delete('/api/series/:id', authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const r = await query('SELECT * FROM series WHERE id = $1', [req.params.id])
+    if (r.rows.length === 0) return res.status(404).json({ error: '剧集不存在' })
+    await query('DELETE FROM series WHERE id = $1', [req.params.id])
+    res.json({ success: true })
+  } catch (e) {
+    res.status(500).json({ error: '删除剧集失败' })
+  }
+})
+
+function formatSeries(row) {
+  return {
+    id: row.id,
+    titleZh: row.title_zh,
+    titleEn: row.title_en,
+    titleTh: row.title_th,
+    poster: row.poster,
+    platform: row.platform,
+    startDate: row.start_date,
+    totalEpisodes: row.total_episodes,
+    airedEpisodes: row.aired_episodes,
+    updateDay: row.update_day,
+    cpName: row.cp_name,
+    synopsis: row.synopsis,
+    status: row.status,
+    watchLinks: typeof row.watch_links === 'string' ? JSON.parse(row.watch_links) : row.watch_links,
+    created_at: row.created_at,
+  }
+}
 
 // ─── Review Routes ───
 

@@ -6,6 +6,7 @@ const API = '/api'
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
+  const [isAdmin, setIsAdmin] = useState(false)
   const [loading, setLoading] = useState(true)
 
   // Check existing token on mount
@@ -15,7 +16,10 @@ export function AuthProvider({ children }) {
       fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
         .then((r) => r.json())
         .then((data) => {
-          if (data.user) setUser(data.user)
+          if (data.user) {
+            setUser(data.user)
+            setIsAdmin(data.user.is_admin)
+          }
           else localStorage.removeItem('token')
         })
         .catch(() => localStorage.removeItem('token'))
@@ -35,6 +39,7 @@ export function AuthProvider({ children }) {
     if (!res.ok) throw new Error(data.error)
     localStorage.setItem('token', data.token)
     setUser(data.user)
+    setIsAdmin(data.user.is_admin)
     return data.user
   }, [])
 
@@ -48,16 +53,18 @@ export function AuthProvider({ children }) {
     if (!res.ok) throw new Error(data.error)
     localStorage.setItem('token', data.token)
     setUser(data.user)
+    setIsAdmin(data.user.is_admin)
     return data.user
   }, [])
 
   const logout = useCallback(() => {
     localStorage.removeItem('token')
     setUser(null)
+    setIsAdmin(false)
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, isAdmin, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   )
