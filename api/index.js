@@ -119,18 +119,18 @@ async function seedIfEmpty() {
     for (const s of seedData) {
       if (dbType === 'pg') {
         await query(`INSERT INTO series (id, title_zh, title_en, title_th, poster, platform, start_date,
-          total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links)
-          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) ON CONFLICT DO NOTHING`,
+          total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order)
+          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) ON CONFLICT DO NOTHING`,
           [s.id, s.titleZh, s.titleEn, s.titleTh || '', s.poster || '', s.platform, s.startDate,
            s.totalEpisodes, s.airedEpisodes, s.updateDay || '', s.cpName || '', s.synopsis || '',
-           s.status, JSON.stringify(s.watchLinks || [])])
+           s.status, JSON.stringify(s.watchLinks || []), s.sortOrder ?? 0])
       } else {
         await query(`INSERT OR IGNORE INTO series (id, title_zh, title_en, title_th, poster, platform, start_date,
-          total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links)
-          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [s.id, s.titleZh, s.titleEn, s.titleTh || '', s.poster || '', s.platform, s.startDate,
            s.totalEpisodes, s.airedEpisodes, s.updateDay || '', s.cpName || '', s.synopsis || '',
-           s.status, JSON.stringify(s.watchLinks || [])])
+           s.status, JSON.stringify(s.watchLinks || []), s.sortOrder ?? 0])
       }
     }
     return true
@@ -145,7 +145,7 @@ async function seedIfEmpty() {
 app.get('/api/series', async (req, res) => {
   try {
     await seedIfEmpty()
-    const result = await query('SELECT * FROM series ORDER BY start_date DESC')
+    const result = await query('SELECT * FROM series ORDER BY sort_order ASC, start_date DESC')
     res.json({ series: result.rows.map(formatSeries) })
   } catch (e) {
     console.error(e)
@@ -170,13 +170,16 @@ app.post('/api/series', authMiddleware, adminMiddleware, async (req, res) => {
     if (!titleZh || !platform || !startDate) {
       return res.status(400).json({ error: '标题、平台和开播日期为必填项' })
     }
+    // Get max sort_order to place new series at the end
+    const maxOrder = await query('SELECT COALESCE(MAX(sort_order), -1)::int as max_order FROM series')
+    const nextOrder = maxOrder.rows[0]?.max_order + 1
     const result = await query(`
       INSERT INTO series (title_zh, title_en, title_th, poster, platform, start_date,
-        total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *
+        total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *
     `, [titleZh, titleEn || '', titleTh || '', poster || '', platform, startDate,
       totalEpisodes || 0, airedEpisodes || 0, updateDay || '', cpName || '', synopsis || '',
-      status || 'upcoming', JSON.stringify(watchLinks || [])])
+      status || 'upcoming', JSON.stringify(watchLinks || []), nextOrder])
     res.status(201).json({ series: formatSeries(result.rows[0]) })
   } catch (e) {
     console.error(e)
@@ -224,6 +227,40 @@ app.delete('/api/series/:id', authMiddleware, adminMiddleware, async (req, res) 
   }
 })
 
+app.put('/api/series/:id/reorder', authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const { direction } = req.body
+    if (!direction || (direction !== 'up' && direction !== 'down')) {
+      return res.status(400).json({ error: 'direction must be "up" or "down"' })
+    }
+
+    const target = await query('SELECT * FROM series WHERE id = $1', [req.params.id])
+    if (target.rows.length === 0) return res.status(404).json({ error: '剧集不存在' })
+
+    const targetOrder = target.rows[0].sort_order
+    const dir = direction === 'up' ? 'DESC' : 'ASC'
+    const op = direction === 'up' ? '<' : '>'
+
+    const adjacent = await query(
+      `SELECT * FROM series WHERE sort_order ${op} $1 ORDER BY sort_order ${dir} LIMIT 1`,
+      [targetOrder]
+    )
+
+    if (adjacent.rows.length === 0) {
+      return res.json({ swapped: false, message: '已经是最前/最后位置' })
+    }
+
+    const adjOrder = adjacent.rows[0].sort_order
+    await query('UPDATE series SET sort_order = $1 WHERE id = $2', [adjOrder, target.rows[0].id])
+    await query('UPDATE series SET sort_order = $1 WHERE id = $2', [targetOrder, adjacent.rows[0].id])
+
+    res.json({ swapped: true })
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({ error: '排序失败' })
+  }
+})
+
 // ─── Cron Routes ───
 
 app.get('/api/cron/update-aired-episodes', async (req, res) => {
@@ -268,6 +305,7 @@ function formatSeries(row) {
     synopsis: row.synopsis,
     status: row.status,
     watchLinks: typeof row.watch_links === 'string' ? JSON.parse(row.watch_links) : row.watch_links,
+    sortOrder: row.sort_order ?? 0,
     created_at: row.created_at,
   }
 }

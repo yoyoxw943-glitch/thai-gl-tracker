@@ -5,7 +5,7 @@ function setupSeriesRoutes(app) {
   // Get all series
   app.get('/api/series', (req, res) => {
     const db = getDb()
-    const rows = db.prepare('SELECT * FROM series ORDER BY start_date DESC').all()
+    const rows = db.prepare('SELECT * FROM series ORDER BY sort_order ASC, start_date DESC').all()
     const series = rows.map(formatSeries)
     res.json({ series })
   })
@@ -29,14 +29,17 @@ function setupSeriesRoutes(app) {
       return res.status(400).json({ error: '标题、平台和开播日期为必填项' })
     }
 
+    const maxOrder = db.prepare('SELECT COALESCE(MAX(sort_order), -1) as max_order FROM series').get()
+    const nextOrder = (maxOrder?.max_order ?? -1) + 1
+
     const result = db.prepare(`
       INSERT INTO series (title_zh, title_en, title_th, poster, platform, start_date,
-        total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       titleZh, titleEn || '', titleTh || '', poster || '', platform, startDate,
       totalEpisodes || 0, airedEpisodes || 0, updateDay || '', cpName || '', synopsis || '',
-      status || 'upcoming', JSON.stringify(watchLinks || []),
+      status || 'upcoming', JSON.stringify(watchLinks || []), nextOrder,
     )
 
     const row = db.prepare('SELECT * FROM series WHERE id = ?').get(result.lastInsertRowid)
@@ -79,6 +82,36 @@ function setupSeriesRoutes(app) {
 
     const row = db.prepare('SELECT * FROM series WHERE id = ?').get(req.params.id)
     res.json({ series: formatSeries(row) })
+  })
+
+  // Reorder series
+  app.put('/api/series/:id/reorder', authMiddleware, adminMiddleware, (req, res) => {
+    const db = getDb()
+    const { direction } = req.body
+    if (!direction || (direction !== 'up' && direction !== 'down')) {
+      return res.status(400).json({ error: 'direction must be "up" or "down"' })
+    }
+
+    const target = db.prepare('SELECT * FROM series WHERE id = ?').get(req.params.id)
+    if (!target) return res.status(404).json({ error: '剧集不存在' })
+
+    const targetOrder = target.sort_order
+    const dir = direction === 'up' ? 'DESC' : 'ASC'
+    const op = direction === 'up' ? '<' : '>'
+
+    const adjacent = db.prepare(
+      `SELECT * FROM series WHERE sort_order ${op} ? ORDER BY sort_order ${dir} LIMIT 1`
+    ).get(targetOrder)
+
+    if (!adjacent) {
+      return res.json({ swapped: false, message: '已经是最前/最后位置' })
+    }
+
+    const adjOrder = adjacent.sort_order
+    db.prepare('UPDATE series SET sort_order = ? WHERE id = ?').run(adjOrder, target.id)
+    db.prepare('UPDATE series SET sort_order = ? WHERE id = ?').run(targetOrder, adjacent.id)
+
+    res.json({ swapped: true })
   })
 
   // Delete series
@@ -132,6 +165,7 @@ function formatSeries(row) {
     synopsis: row.synopsis,
     status: row.status,
     watchLinks: typeof row.watch_links === 'string' ? JSON.parse(row.watch_links) : row.watch_links,
+    sortOrder: row.sort_order ?? 0,
     created_at: row.created_at,
   }
 }

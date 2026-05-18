@@ -9,8 +9,8 @@ const db = getDb()
 
 const insert = db.prepare(`
   INSERT OR IGNORE INTO series (id, title_zh, title_en, title_th, poster, platform, start_date,
-    total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `)
 
 const insertMany = db.transaction((series) => {
@@ -30,6 +30,7 @@ const insertMany = db.transaction((series) => {
       s.synopsis || '',
       s.status,
       JSON.stringify(s.watchLinks || []),
+      s.sortOrder ?? 0,
     )
   }
 })

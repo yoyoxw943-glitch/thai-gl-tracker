@@ -1148,6 +1148,23 @@ button {
   opacity: 0.8;
 }
 
+.admin-order-btn {
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  border: none;
+  cursor: pointer;
+  margin-right: 2px;
+  background: rgba(255,255,255,0.06);
+  color: var(--text-dim);
+  transition: all 0.2s;
+}
+
+.admin-order-btn:hover {
+  background: rgba(232, 93, 154, 0.2);
+  color: var(--accent);
+}
+
 /* ========== Refresh indicator ========== */
 .refresh-indicator {
   display: inline-block;

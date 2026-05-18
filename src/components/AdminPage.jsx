@@ -85,6 +85,21 @@ export default function AdminPage({ onClose }) {
     }
   }
 
+  const handleReorder = async (s, direction) => {
+    try {
+      const res = await fetch(`${API}/series/${s.id}/reorder`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token()}` },
+        body: JSON.stringify({ direction }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error)
+      if (data.swapped) fetchSeries()
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
   const handleDelete = async (s) => {
     if (!confirm(`确定删除《${s.titleZh}》吗？此操作不可撤销。`)) return
     try {
@@ -220,6 +235,7 @@ export default function AdminPage({ onClose }) {
                 <th>开播</th>
                 <th>进度</th>
                 <th>状态</th>
+                <th>排序</th>
                 <th>操作</th>
               </tr>
             </thead>
@@ -235,6 +251,10 @@ export default function AdminPage({ onClose }) {
                     <span className={`admin-status admin-status-${s.status}`}>
                       {{ airing: '播出中', completed: '已完结', upcoming: '待播出' }[s.status]}
                     </span>
+                  </td>
+                  <td>
+                    <button className="admin-order-btn" onClick={() => handleReorder(s, 'up')} title="上移">↑</button>
+                    <button className="admin-order-btn" onClick={() => handleReorder(s, 'down')} title="下移">↓</button>
                   </td>
                   <td>
                     <button className="admin-edit-btn" onClick={() => openEdit(s)}>编辑</button>

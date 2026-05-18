@@ -40,6 +40,7 @@ async function getClient() {
       synopsis TEXT NOT NULL DEFAULT '',
       status TEXT NOT NULL DEFAULT 'upcoming',
       watch_links TEXT NOT NULL DEFAULT '[]',
+      sort_order INTEGER NOT NULL DEFAULT 0,
       created_at TIMESTAMP DEFAULT NOW()
     )`)
   } else {
@@ -86,6 +87,7 @@ async function getClient() {
         synopsis TEXT NOT NULL DEFAULT '',
         status TEXT NOT NULL DEFAULT 'upcoming',
         watch_links TEXT NOT NULL DEFAULT '[]',
+      sort_order INTEGER NOT NULL DEFAULT 0,
         created_at TEXT DEFAULT (datetime('now'))
       );
     `)
