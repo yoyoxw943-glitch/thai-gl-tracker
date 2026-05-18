@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react'
-import { filterSeries, getAvailableMonths, getAvailablePlatforms, getRecentThreeMonths } from './utils/filterSeries'
+import { filterSeries, getAvailableMonths, getAvailablePlatforms } from './utils/filterSeries'
 import fallbackData from './data/series.json'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { usePolling } from './utils/usePolling'
@@ -68,8 +68,6 @@ function AppContent() {
     [seriesData, selectedPlatforms, selectedMonths, statusFilter]
   )
 
-  const recentSeries = useMemo(() => getRecentThreeMonths(seriesData), [seriesData])
-
   const togglePlatform = (p) => {
     setSelectedPlatforms((prev) =>
       prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]
@@ -82,9 +80,7 @@ function AppContent() {
     )
   }
 
-  const displaySeries = selectedPlatforms.length || selectedMonths.length || statusFilter
-    ? filtered
-    : recentSeries
+  const displaySeries = filtered
 
   // Admin page
   if (showAdmin && isAdmin) {
@@ -133,7 +129,7 @@ function AppContent() {
         {(selectedPlatforms.length || selectedMonths.length || statusFilter) ? (
           <span className="filter-hint">（已筛选）</span>
         ) : (
-          <span className="filter-hint">近3个月播出</span>
+          <span className="filter-hint">全部剧集</span>
         )}
       </section>
 
