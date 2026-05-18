@@ -1,4 +1,5 @@
-[
+// Auto-generated from src/data/series.json — do not edit directly
+export default [
   {
     "id": 1,
     "titleZh": "冰冻情人节",
@@ -1149,4 +1150,4 @@
       }
     ]
   }
-]
+];

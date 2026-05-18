@@ -3,6 +3,7 @@ import cors from 'cors'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { query } from './db.js'
+import seedData from './seed-data.js'
 
 const app = express()
 app.use(cors())
@@ -109,10 +110,41 @@ app.get('/api/auth/me', authMiddleware, async (req, res) => {
   }
 })
 
+async function seedIfEmpty() {
+  try {
+    const count = await query('SELECT COUNT(*)::int as count FROM series')
+    if (count.rows[0]?.count > 0) return false
+
+    const dbType = process.env.POSTGRES_URL ? 'pg' : 'sqlite'
+    for (const s of seedData) {
+      if (dbType === 'pg') {
+        await query(`INSERT INTO series (id, title_zh, title_en, title_th, poster, platform, start_date,
+          total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links)
+          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) ON CONFLICT DO NOTHING`,
+          [s.id, s.titleZh, s.titleEn, s.titleTh || '', s.poster || '', s.platform, s.startDate,
+           s.totalEpisodes, s.airedEpisodes, s.updateDay || '', s.cpName || '', s.synopsis || '',
+           s.status, JSON.stringify(s.watchLinks || [])])
+      } else {
+        await query(`INSERT OR IGNORE INTO series (id, title_zh, title_en, title_th, poster, platform, start_date,
+          total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          [s.id, s.titleZh, s.titleEn, s.titleTh || '', s.poster || '', s.platform, s.startDate,
+           s.totalEpisodes, s.airedEpisodes, s.updateDay || '', s.cpName || '', s.synopsis || '',
+           s.status, JSON.stringify(s.watchLinks || [])])
+      }
+    }
+    return true
+  } catch (e) {
+    console.error('Auto-seed failed:', e.message)
+    return false
+  }
+}
+
 // ─── Series Routes ───
 
 app.get('/api/series', async (req, res) => {
   try {
+    await seedIfEmpty()
     const result = await query('SELECT * FROM series ORDER BY start_date DESC')
     res.json({ series: result.rows.map(formatSeries) })
   } catch (e) {
