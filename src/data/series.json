@@ -14,8 +14,14 @@
     "synopsis": "曾经是书呆子的 Pingrak 暗恋高冷学姐 P'Charm 多年却屡遭拒绝。多年后她华丽蜕变为富家千金，两人在一部GL剧集中再次相遇成为荧幕情侣，戏里戏外的界限逐渐模糊。丑小鸭逆袭 + 戏中戏 + 追妻火葬场。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "WeTV", "url": "https://wetv.vip/en/play/yzj4zsnj0lv4oxl"},
-      {"platform": "WeTV (未删减)", "url": "https://wetv.vip/en/play/me58s2kxqbv0z13"}
+      {
+        "platform": "WeTV",
+        "url": "https://wetv.vip/en/play/yzj4zsnj0lv4oxl"
+      },
+      {
+        "platform": "WeTV (未删减)",
+        "url": "https://wetv.vip/en/play/me58s2kxqbv0z13"
+      }
     ]
   },
   {
@@ -33,8 +39,14 @@
     "synopsis": "Sun 暗恋闺蜜的姐姐 Rafah——一位豪华汽车公司高管。为了赢得她的心，Sun 进入竞争激烈的娱乐圈。绯闻、嫉妒、失散的双胞胎姐妹秘密，一部关于勇气与真实自我的爱情故事。Star Hunter Entertainment 出品。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "iQIYI", "url": "https://www.iq.com/search/My%20Only%20Sunshine"},
-      {"platform": "YouTube", "url": "https://www.youtube.com/@GMMTV"}
+      {
+        "platform": "iQIYI",
+        "url": "https://www.iq.com/search/My%20Only%20Sunshine"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@GMMTV"
+      }
     ]
   },
   {
@@ -52,9 +64,18 @@
     "synopsis": "一群好友关系因情感纠葛陷入混乱。广告公司合伙人 Prim 和 Min，Prim 的前女友 Bambi 以客户身份回归，模特 Shasha、造型师 Gorya 和摄影师 Praew 之间错综复杂的关系。GMMTV全明星GL阵容，共12集，6月1日大结局。",
     "status": "airing",
     "watchLinks": [
-      {"platform": "iQIYI (未删减)", "url": "https://www.iq.com/search/Girl%20Rules"},
-      {"platform": "YouTube", "url": "https://www.youtube.com/@GMMTV"},
-      {"platform": "Bilibili", "url": "https://search.bilibili.com/all?keyword=Girl%20Rules%20女孩规则"}
+      {
+        "platform": "iQIYI (未删减)",
+        "url": "https://www.iq.com/search/Girl%20Rules"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@GMMTV"
+      },
+      {
+        "platform": "Bilibili",
+        "url": "https://search.bilibili.com/all?keyword=Girl%20Rules%20女孩规则"
+      }
     ]
   },
   {
@@ -72,8 +93,14 @@
     "synopsis": "Arisa 为母亲复仇接近资本家，却意外爱上了仇人的女儿 Lalin。复仇与爱情交织的黑暗GL故事，电影级暗黑美学。Faye Peraya 继《Blank》后又一力作。Fabel Entertainment 出品，5月16日刚完结。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@FabelEntertainment"},
-      {"platform": "Bilibili", "url": "https://search.bilibili.com/all?keyword=Broken%20of%20Love%20破碎的爱"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@FabelEntertainment"
+      },
+      {
+        "platform": "Bilibili",
+        "url": "https://search.bilibili.com/all?keyword=Broken%20of%20Love%20破碎的爱"
+      }
     ]
   },
   {
@@ -91,8 +118,14 @@
     "synopsis": "单亲妈妈 Inging 是游乐园经理，新CEO Lilin 想要拆掉游乐园建补习班。两人在对抗中越走越近。泰国影后 Yada Narilya（《灵媒》）首次主演GL剧集。Channel 3 出品。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "Channel 3", "url": "https://ch3plus.com/"},
-      {"platform": "YouTube", "url": "https://www.youtube.com/@Ch3Thailand"}
+      {
+        "platform": "Channel 3",
+        "url": "https://ch3plus.com/"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@Ch3Thailand"
+      }
     ]
   },
   {
@@ -110,9 +143,18 @@
     "synopsis": "都市名媛 Si 被迫与乡下女孩 Klao 订婚以续租家族地产。为证明自己她住进乡村，两种截然不同的世界碰撞出爱与成长的故事。改编自小说《สามีบ้านนอก》，LMSY 第三次合作。5月22日大结局。",
     "status": "airing",
     "watchLinks": [
-      {"platform": "oneD", "url": "https://www.oned.net/"},
-      {"platform": "iQIYI", "url": "https://www.iq.com/search/Hometown%20Romance"},
-      {"platform": "Bilibili", "url": "https://search.bilibili.com/all?keyword=Hometown%20Romance%20乡恋情缘"}
+      {
+        "platform": "oneD",
+        "url": "https://www.oned.net/"
+      },
+      {
+        "platform": "iQIYI",
+        "url": "https://www.iq.com/search/Hometown%20Romance"
+      },
+      {
+        "platform": "Bilibili",
+        "url": "https://search.bilibili.com/all?keyword=Hometown%20Romance%20乡恋情缘"
+      }
     ]
   },
   {
@@ -130,8 +172,14 @@
     "synopsis": "精英女校中六名学生和一位老师各自隐藏秘密。数字时代的丑闻威胁着曝光一切——禁恋、身份欺骗与校园暗黑故事。FRT Entertainment 首部GL作品。泰国版 4/18 开播，国际未删减版 6/6 上线 YouTube。",
     "status": "airing",
     "watchLinks": [
-      {"platform": "YouTube (6/6 全球)", "url": "https://www.youtube.com/@FRTEntertainment"},
-      {"platform": "TrueVisions (泰国)", "url": "https://trueid.net/"}
+      {
+        "platform": "YouTube (6/6 全球)",
+        "url": "https://www.youtube.com/@FRTEntertainment"
+      },
+      {
+        "platform": "TrueVisions (泰国)",
+        "url": "https://trueid.net/"
+      }
     ]
   },
   {
@@ -149,9 +197,18 @@
     "synopsis": "大学恋人 Aioon 和 Pafun 走进婚姻，梦想组建家庭。当领养之路困难重重时，好友 Nubnueng 带着改变一切的机会归来。泰国首部聚焦已婚女同性恋伴侣的GL剧集。导演 Nay Saratswadee（曾执导《我们的秘密》）。",
     "status": "airing",
     "watchLinks": [
-      {"platform": "Channel 3", "url": "https://ch3plus.com/"},
-      {"platform": "Netflix", "url": "https://www.netflix.com/search?q=Fulfill"},
-      {"platform": "YouTube", "url": "https://www.youtube.com/@Ch3Thailand"}
+      {
+        "platform": "Channel 3",
+        "url": "https://ch3plus.com/"
+      },
+      {
+        "platform": "Netflix",
+        "url": "https://www.netflix.com/search?q=Fulfill"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@Ch3Thailand"
+      }
     ]
   },
   {
@@ -169,9 +226,18 @@
     "synopsis": "虚构王国 Madelin 的公主 Catherine 访问泰国时遭遇暗杀，女警 Wayo 奉命保护她。两人在逃亡中发展出禁忌的亲密关系。FreenBecky 继《粉红理论》后再度联手，四元素系列之《风》。North Star 出品。",
     "status": "airing",
     "watchLinks": [
-      {"platform": "iQIYI", "url": "https://www.iq.com/search/The%20Air%20%E0%B9%80%E0%B8%AA%E0%B8%99%E0%B9%88%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B2%E0%B9%82%E0%B8%A2"},
-      {"platform": "Channel 7HD", "url": "https://www.ch7.com/"},
-      {"platform": "Bilibili", "url": "https://search.bilibili.com/all?keyword=The%20Air%20风之恋歌%20FreenBecky"}
+      {
+        "platform": "iQIYI",
+        "url": "https://www.iq.com/search/The%20Air%20%E0%B9%80%E0%B8%AA%E0%B8%99%E0%B9%88%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B2%E0%B9%82%E0%B8%A2"
+      },
+      {
+        "platform": "Channel 7HD",
+        "url": "https://www.ch7.com/"
+      },
+      {
+        "platform": "Bilibili",
+        "url": "https://search.bilibili.com/all?keyword=The%20Air%20风之恋歌%20FreenBecky"
+      }
     ]
   },
   {
@@ -179,7 +245,7 @@
     "titleZh": "粉红理论",
     "titleEn": "GAP: The Series",
     "titleTh": "ทฤษฎีสีชมพู",
-    "poster": "",
+    "poster": "/posters/10.svg",
     "platform": "YouTube",
     "startDate": "2022-11-19",
     "totalEpisodes": 12,
@@ -189,8 +255,14 @@
     "synopsis": "刚毕业的 Mon 进入大公司，发现CEO Sam 是个高傲冷漠的女人。两人在朝夕相处中从对抗走向心动，但8岁的年龄差和阶级鸿沟让这段关系充满挑战。泰国GL剧的现象级开山之作，FreenBecky 一举成名，彻底打开了泰GL市场。IdolFactory 出品。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@IDOLFACTORY"},
-      {"platform": "Bilibili", "url": "https://search.bilibili.com/all?keyword=GAP%20%E7%B2%89%E7%BA%A2%E7%90%86%E8%AE%BA"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@IDOLFACTORY"
+      },
+      {
+        "platform": "Bilibili",
+        "url": "https://search.bilibili.com/all?keyword=GAP%20%E7%B2%89%E7%BA%A2%E7%90%86%E8%AE%BA"
+      }
     ]
   },
   {
@@ -198,7 +270,7 @@
     "titleZh": "展现爱",
     "titleEn": "Show Me Love",
     "titleTh": "",
-    "poster": "",
+    "poster": "/posters/11.svg",
     "platform": "YouTube",
     "startDate": "2023-02-22",
     "totalEpisodes": 9,
@@ -208,25 +280,31 @@
     "synopsis": "小镇女孩 Meena 参加选美比赛，遇见了光彩夺目的选美冠军 Cherine，两人在相处中产生微妙情愫。EngLot 首次合作，选美背景下的甜蜜爱情故事。GrandTH 出品。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@GrandTH"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@GrandTH"
+      }
     ]
   },
   {
     "id": 12,
     "titleZh": "我的梦是你",
     "titleEn": "My Marvellous Dream Is You",
-    "titleTh": "",
-    "poster": "",
+    "titleTh": "ฝันรักห้วงนิทรา",
+    "poster": "/posters/12.svg",
     "platform": "YouTube",
-    "startDate": "2023-03-26",
+    "startDate": "2024-05-08",
     "totalEpisodes": 12,
     "airedEpisodes": 12,
     "updateDay": "",
     "cpName": "Fay Kunyaphat × May Yada",
-    "synopsis": "女孩梦见一个神秘女子，醒来后发现梦中的她真实存在。FayMay 首次搭档，IdolFactory 出品，奇幻爱情题材。",
+    "synopsis": "Dawan 总在梦中遇见同一个神秘女孩。直到新邻居搬来，她发现邻居女儿 Khimhan 正是梦中人。两人越走越近，但 Dawan 慢慢发现这些梦并非她一人所有。FayMay 首部主演GL，IdolFactory 出品，改编自 Chao Planoy 小说。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@IDOLFACTORY"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@IDOLFACTORY"
+      }
     ]
   },
   {
@@ -234,17 +312,20 @@
     "titleZh": "爱上前辈",
     "titleEn": "Love Senior",
     "titleTh": "",
-    "poster": "",
-    "platform": "YouTube",
-    "startDate": "2023-05-17",
+    "poster": "/posters/13.svg",
+    "platform": "WeTV",
+    "startDate": "2023-11-08",
     "totalEpisodes": 10,
     "airedEpisodes": 10,
     "updateDay": "",
     "cpName": "Anda × Lookkaew",
-    "synopsis": "大一新生在迎新活动中被学姐「欺负」，却在接触中渐生好感。校园题材GL，AndaLookkaew 代表作。Star Hunter Entertainment 出品。",
+    "synopsis": "大一新生 Manaow 在工程学院严格的学长学妹制度下，爱上了大二学生会干部 Gyoza。AndaLookkaew 代表作，Star Hunter Entertainment 出品。WeTV播出未删减版。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@StarHunterEnt"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@StarHunterEnt"
+      }
     ]
   },
   {
@@ -252,7 +333,7 @@
     "titleZh": "成为我的",
     "titleEn": "Be Mine The Series",
     "titleTh": "",
-    "poster": "",
+    "poster": "/posters/14.svg",
     "platform": "YouTube",
     "startDate": "2023-05-19",
     "totalEpisodes": 6,
@@ -262,7 +343,10 @@
     "synopsis": "多对情侣的群像故事，围绕室友关系展开的校园恋情。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@BeMineTheSeries"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@BeMineTheSeries"
+      }
     ]
   },
   {
@@ -270,7 +354,7 @@
     "titleZh": "幸运我的爱",
     "titleEn": "Lucky My Love",
     "titleTh": "",
-    "poster": "",
+    "poster": "/posters/15.svg",
     "platform": "YouTube",
     "startDate": "2023-05-25",
     "totalEpisodes": 5,
@@ -280,7 +364,10 @@
     "synopsis": "一部轻松的短篇GL迷你剧集，讲述了两个女孩之间的甜蜜恋情。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@BmineNear"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@BmineNear"
+      }
     ]
   },
   {
@@ -288,7 +375,7 @@
     "titleZh": "爱情恶霸",
     "titleEn": "Club Friday S16: Love Bully",
     "titleTh": "",
-    "poster": "",
+    "poster": "/posters/16.svg",
     "platform": "YouTube",
     "startDate": "2023-06-05",
     "totalEpisodes": 4,
@@ -298,7 +385,10 @@
     "synopsis": "Club Friday 系列第16季中的GL支线，EngLot 特别出演的短篇故事。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@Change2561"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@Change2561"
+      }
     ]
   },
   {
@@ -306,7 +396,7 @@
     "titleZh": "空白",
     "titleEn": "Blank The Series",
     "titleTh": "",
-    "poster": "",
+    "poster": "/posters/17.svg",
     "platform": "YouTube",
     "startDate": "2024-03-02",
     "totalEpisodes": 12,
@@ -316,8 +406,14 @@
     "synopsis": "16岁年龄差的爱情。年轻女孩 Nueng 在人生低谷时遇见了年长的 Anueng，两人在互相救赎中坠入爱河。FayeYoko 的成名作，情感浓烈，演技爆发。NineStar 出品，分为两季各6集。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@NineStarStudios"},
-      {"platform": "Bilibili", "url": "https://search.bilibili.com/all?keyword=Blank%20The%20Series%20%E7%A9%BA%E7%99%BD"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@NineStarStudios"
+      },
+      {
+        "platform": "Bilibili",
+        "url": "https://search.bilibili.com/all?keyword=Blank%20The%20Series%20%E7%A9%BA%E7%99%BD"
+      }
     ]
   },
   {
@@ -325,7 +421,7 @@
     "titleZh": "23.5度",
     "titleEn": "23.5",
     "titleTh": "23.5 องศาที่โลกเอียง",
-    "poster": "",
+    "poster": "/posters/18.svg",
     "platform": "YouTube",
     "startDate": "2024-03-08",
     "totalEpisodes": 12,
@@ -335,26 +431,35 @@
     "synopsis": "转学生 Sun 用化名「Earth」在网上暗恋学姐 Ongsa，被发现后引发一系列又甜又尬的校园故事。GMMTV 首部GL剧集，MilkLove 清新校园爱情，Netflix同步播出。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@GMMTV"},
-      {"platform": "Netflix", "url": "https://www.netflix.com/search?q=23.5"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@GMMTV"
+      },
+      {
+        "platform": "Netflix",
+        "url": "https://www.netflix.com/search?q=23.5"
+      }
     ]
   },
   {
     "id": 19,
-    "titleZh": "梦",
-    "titleEn": "Dream",
+    "titleZh": "解锁你的爱",
+    "titleEn": "Unlock Your Love",
     "titleTh": "",
-    "poster": "",
+    "poster": "/posters/19.svg",
     "platform": "YouTube",
-    "startDate": "2024-04-17",
-    "totalEpisodes": 12,
-    "airedEpisodes": 12,
+    "startDate": "2024-09-11",
+    "totalEpisodes": 8,
+    "airedEpisodes": 8,
     "updateDay": "",
-    "cpName": "Fay Kunyaphat × May Yada",
-    "synopsis": "一个只在梦中出现的女孩，某天突然走进了现实生活。FayMay 第二部合作作品，IdolFactory 出品，奇幻浪漫题材。",
+    "cpName": "Bmine × Near",
+    "synopsis": "两个女孩在工作中相遇，从陌生到亲密的甜蜜爱情故事。BmineNear 合作作品。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@IDOLFACTORY"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@BmineNear"
+      }
     ]
   },
   {
@@ -362,7 +467,7 @@
     "titleZh": "我们的秘密",
     "titleEn": "The Secret of Us",
     "titleTh": "ใจซ่อนรัก",
-    "poster": "",
+    "poster": "/posters/20.svg",
     "platform": "Channel 3",
     "startDate": "2024-06-24",
     "totalEpisodes": 8,
@@ -372,9 +477,18 @@
     "synopsis": "医生 Fahlada 与前任 Earn 痛苦分手。多年后 Earn 以医院代言人身份归来，两人被迫再次面对那段未曾愈合的感情。Channel 3 首部GL剧集，LingOrm 一举封神，虐心虐肺的破镜重圆。Netflix同步播出。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "Channel 3", "url": "https://ch3plus.com/"},
-      {"platform": "Netflix", "url": "https://www.netflix.com/search?q=The%20Secret%20of%20Us"},
-      {"platform": "YouTube", "url": "https://www.youtube.com/@Ch3Thailand"}
+      {
+        "platform": "Channel 3",
+        "url": "https://ch3plus.com/"
+      },
+      {
+        "platform": "Netflix",
+        "url": "https://www.netflix.com/search?q=The%20Secret%20of%20Us"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@Ch3Thailand"
+      }
     ]
   },
   {
@@ -382,7 +496,7 @@
     "titleZh": "簪定此生",
     "titleEn": "The Loyal Pin",
     "titleTh": "ปิ่นภักดิ์",
-    "poster": "",
+    "poster": "/posters/21.svg",
     "platform": "YouTube",
     "startDate": "2024-08-04",
     "totalEpisodes": 16,
@@ -392,8 +506,14 @@
     "synopsis": "1950年代，公主 Anin 与贵族少女 Pin 从小一起长大。Anin 去英国留学后意识到自己爱上了 Pin，但归来时 Pin 已被许配他人。FreenBecky 二搭，精良的年代剧制作，华服美景，虐心又甜蜜。IdolFactory 出品。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@IDOLFACTORY"},
-      {"platform": "Bilibili", "url": "https://search.bilibili.com/all?keyword=%E7%B0%AA%E5%AE%9A%E6%AD%A4%E7%94%9F"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@IDOLFACTORY"
+      },
+      {
+        "platform": "Bilibili",
+        "url": "https://search.bilibili.com/all?keyword=%E7%B0%AA%E5%AE%9A%E6%AD%A4%E7%94%9F"
+      }
     ]
   },
   {
@@ -401,7 +521,7 @@
     "titleZh": "爱情诡计",
     "titleEn": "Affair",
     "titleTh": "",
-    "poster": "",
+    "poster": "/posters/22.svg",
     "platform": "iQIYI",
     "startDate": "2024-08-30",
     "totalEpisodes": 8,
@@ -411,16 +531,22 @@
     "synopsis": "青梅竹马的 Wan 和 Pleng 因家庭变故分离，多年后重逢时已是两个不同世界的人。虐心的情感拉扯，LMSY（LookmheeSonya）首部主演GL，被誉为化学反应最强的CP之一。Change2561 出品。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "iQIYI", "url": "https://www.iq.com/search/Affair%20%E0%B8%AD%E0%B8%B2%E0%B8%9A%E0%B8%AD%E0%B8%87"},
-      {"platform": "YouTube", "url": "https://www.youtube.com/@Change2561"}
+      {
+        "platform": "iQIYI",
+        "url": "https://www.iq.com/search/Affair%20%E0%B8%AD%E0%B8%B2%E0%B8%9A%E0%B8%AD%E0%B8%87"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@Change2561"
+      }
     ]
   },
   {
     "id": 23,
     "titleZh": "逆转时光",
     "titleEn": "Reverse 4 You",
-    "titleTh": "",
-    "poster": "",
+    "titleTh": "ดาวบริวาร",
+    "poster": "/posters/23.svg",
     "platform": "Netflix",
     "startDate": "2024-09-03",
     "totalEpisodes": 8,
@@ -430,16 +556,22 @@
     "synopsis": "一对姐妹拥有特殊能力——姐姐能看到未来，妹妹能逆转时间。当命运逼她们做出选择时，爱情成为最不可控的变量。奇幻题材GL，Kantana 出品，Netflix同步播出。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "Netflix", "url": "https://www.netflix.com/search?q=Reverse%204%20You"},
-      {"platform": "YouTube", "url": "https://www.youtube.com/@Kantana"}
+      {
+        "platform": "Netflix",
+        "url": "https://www.netflix.com/search?q=Reverse%204%20You"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@Kantana"
+      }
     ]
   },
   {
     "id": 24,
     "titleZh": "致亲爱的你",
     "titleEn": "Apple My Love",
-    "titleTh": "",
-    "poster": "",
+    "titleTh": "ถึงเธอ...ผู้เป็นที่รัก",
+    "poster": "/posters/24.svg",
     "platform": "YouTube",
     "startDate": "2024-10-12",
     "totalEpisodes": 6,
@@ -449,26 +581,35 @@
     "synopsis": "失明后恢复视力的女孩寻找记忆中那个陪伴她的声音。OrmFolk 甜蜜虐心的爱情故事，改编自 Chao Planoy 小说。Kongthup 出品。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@KongthupProduction"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@KongthupProduction"
+      }
     ]
   },
   {
     "id": 25,
     "titleZh": "伴侣",
     "titleEn": "Mate The Series",
-    "titleTh": "",
-    "poster": "",
+    "titleTh": "เมท",
+    "poster": "/posters/25.svg",
     "platform": "WeTV",
     "startDate": "2024-10-15",
-    "totalEpisodes": 8,
+    "totalEpisodes": 12,
     "airedEpisodes": 8,
     "updateDay": "",
     "cpName": "Grace × Oaey",
     "synopsis": "富家女与天真单纯的青梅竹马之间的爱情故事。GraceOaey 代表作，Zense Entertainment 出品。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "WeTV", "url": "https://wetv.vip/"},
-      {"platform": "YouTube", "url": "https://www.youtube.com/@ZenseEnt"}
+      {
+        "platform": "WeTV",
+        "url": "https://wetv.vip/"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@ZenseEnt"
+      }
     ]
   },
   {
@@ -476,7 +617,7 @@
     "titleZh": "冥王星之恋",
     "titleEn": "Pluto",
     "titleTh": "นิทาน ดวงดาว ความรัก",
-    "poster": "",
+    "poster": "/posters/26.svg",
     "platform": "YouTube",
     "startDate": "2024-10-19",
     "totalEpisodes": 12,
@@ -486,8 +627,14 @@
     "synopsis": "双胞胎姐妹 Ob-oom 和 Ai-oon 性格迥异。Ob-oom 婚礼之夜发生意外昏迷，Ai-oon 不得不冒充姐姐去见她的秘密恋人 May——却发现 May 是盲人，完全不知道换人。GMMTV 第二部GL，NamtanFilm 封神之作，被众多粉丝评为泰GL最佳。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@GMMTV"},
-      {"platform": "Bilibili", "url": "https://search.bilibili.com/all?keyword=Pluto%20%E5%86%A5%E7%8E%8B%E6%98%9F"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@GMMTV"
+      },
+      {
+        "platform": "Bilibili",
+        "url": "https://search.bilibili.com/all?keyword=Pluto%20%E5%86%A5%E7%8E%8B%E6%98%9F"
+      }
     ]
   },
   {
@@ -495,7 +642,7 @@
     "titleZh": "雨中铁锈味",
     "titleEn": "Petrichor",
     "titleTh": "หยดฝนกลิ่นสนิม",
-    "poster": "",
+    "poster": "/posters/27.svg",
     "platform": "iQIYI",
     "startDate": "2024-11-23",
     "totalEpisodes": 10,
@@ -505,8 +652,14 @@
     "synopsis": "新人刑警 Tul 被分配与法医 Cherran 搭档调查一桩谋杀案。两人办案风格冲突不断，但随着案件线索指向18年前的连环杀手「雨滴杀手」，她们被迫携手追凶。EngLot 二搭，犯罪悬疑 + GL，TV Thunder 出品。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "iQIYI", "url": "https://www.iq.com/search/Petrichor"},
-      {"platform": "YouTube", "url": "https://www.youtube.com/@One31Thailand"}
+      {
+        "platform": "iQIYI",
+        "url": "https://www.iq.com/search/Petrichor"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@One31Thailand"
+      }
     ]
   },
   {
@@ -514,7 +667,7 @@
     "titleZh": "我们的爱",
     "titleEn": "Us: The Series",
     "titleTh": "US รักของเรา",
-    "poster": "",
+    "poster": "/posters/28.svg",
     "platform": "YouTube",
     "startDate": "2025-01-18",
     "totalEpisodes": 12,
@@ -524,8 +677,14 @@
     "synopsis": "18岁的 Dokrak 在咖啡馆遇见了牙科学生 Pam，一⻅钟情——然而哥哥 Kawi 也爱上了 Pam，还让 Dokrak 帮忙撮合。在亲情与爱情之间挣扎的虐心故事。GMMTV 第三部GL，EmiBonnie 代表作。改编自 Chao Planoy 小说。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@GMMTV"},
-      {"platform": "Netflix", "url": "https://www.netflix.com/search?q=Us%20The%20Series"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@GMMTV"
+      },
+      {
+        "platform": "Netflix",
+        "url": "https://www.netflix.com/search?q=Us%20The%20Series"
+      }
     ]
   },
   {
@@ -533,7 +692,7 @@
     "titleZh": "穿越时光爱上你",
     "titleEn": "Reverse With Me",
     "titleTh": "ล้านวงโคจร",
-    "poster": "",
+    "poster": "/posters/29.svg",
     "platform": "Channel 3",
     "startDate": "2025-02-05",
     "totalEpisodes": 8,
@@ -543,8 +702,14 @@
     "synopsis": "时空交错的奇幻爱情，两个来自不同时间的灵魂相遇相恋。Channel 3 出品。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "Channel 3", "url": "https://ch3plus.com/"},
-      {"platform": "YouTube", "url": "https://www.youtube.com/@Ch3Thailand"}
+      {
+        "platform": "Channel 3",
+        "url": "https://ch3plus.com/"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@Ch3Thailand"
+      }
     ]
   },
   {
@@ -552,7 +717,7 @@
     "titleZh": "鲸鱼商店",
     "titleEn": "Whale Store xoxo",
     "titleTh": "คุณวาฬร้านชำ",
-    "poster": "",
+    "poster": "/posters/30.svg",
     "platform": "YouTube",
     "startDate": "2025-06-25",
     "totalEpisodes": 10,
@@ -562,16 +727,22 @@
     "synopsis": "为拯救即将倒闭的家族杂货店，女孩回到家乡，重逢童年玩伴，在鲸鱼主题杂货店里重新发现生活的意义与爱情。MilkLove 二搭，GMMTV 出品的温馨治愈系GL。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@GMMTV"},
-      {"platform": "Netflix", "url": "https://www.netflix.com/search?q=Whale%20Store"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@GMMTV"
+      },
+      {
+        "platform": "Netflix",
+        "url": "https://www.netflix.com/search?q=Whale%20Store"
+      }
     ]
   },
   {
     "id": 31,
     "titleZh": "和谐密语",
     "titleEn": "Harmony Secret",
-    "titleTh": "",
-    "poster": "",
+    "titleTh": "ดีลลับฉบับเล่นเล่ห์",
+    "poster": "/posters/31.svg",
     "platform": "iQIYI",
     "startDate": "2025-07-11",
     "totalEpisodes": 8,
@@ -581,8 +752,14 @@
     "synopsis": "一段被秘密包围的危险恋情，LMSY 二搭，Change2561 出品的高制作水准暗黑爱情故事。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "iQIYI", "url": "https://www.iq.com/search/Harmony%20Secret"},
-      {"platform": "YouTube", "url": "https://www.youtube.com/@Change2561"}
+      {
+        "platform": "iQIYI",
+        "url": "https://www.iq.com/search/Harmony%20Secret"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@Change2561"
+      }
     ]
   },
   {
@@ -590,7 +767,7 @@
     "titleZh": "唯你",
     "titleEn": "Only You",
     "titleTh": "",
-    "poster": "",
+    "poster": "/posters/32.svg",
     "platform": "Channel 3",
     "startDate": "2025-07-18",
     "totalEpisodes": 14,
@@ -600,17 +777,26 @@
     "synopsis": "女保镖奉命保护一位当红歌手，两人在朝夕相处中从互相看不顺眼到暗生情愫。LingOrm 二搭，动作+爱情，Channel 3 出品。Netflix同步播出。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "Channel 3", "url": "https://ch3plus.com/"},
-      {"platform": "Netflix", "url": "https://www.netflix.com/search?q=Only%20You%20Thai"},
-      {"platform": "YouTube", "url": "https://www.youtube.com/@Ch3Thailand"}
+      {
+        "platform": "Channel 3",
+        "url": "https://ch3plus.com/"
+      },
+      {
+        "platform": "Netflix",
+        "url": "https://www.netflix.com/search?q=Only%20You%20Thai"
+      },
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@Ch3Thailand"
+      }
     ]
   },
   {
     "id": 33,
     "titleZh": "何处是我家",
     "titleEn": "Somewhere Somehow",
-    "titleTh": "",
-    "poster": "",
+    "titleTh": "รักปากแข็ง",
+    "poster": "/posters/33.svg",
     "platform": "YouTube",
     "startDate": "2025-08-08",
     "totalEpisodes": 13,
@@ -620,7 +806,10 @@
     "synopsis": "一位工程师和一位VP，两个性格截然相反的人在项目中碰撞出火花。FayMay 三搭，IdolFactory 出品的浪漫喜剧。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "YouTube", "url": "https://www.youtube.com/@IDOLFACTORY"}
+      {
+        "platform": "YouTube",
+        "url": "https://www.youtube.com/@IDOLFACTORY"
+      }
     ]
   },
   {
@@ -628,7 +817,7 @@
     "titleZh": "女王互换记",
     "titleEn": "Queendom",
     "titleTh": "",
-    "poster": "",
+    "poster": "/posters/34.svg",
     "platform": "WeTV",
     "startDate": "2025-08-14",
     "totalEpisodes": 12,
@@ -638,7 +827,10 @@
     "synopsis": "两个身份天差地别的女人意外交换了灵魂，被迫进入对方的世界生活，从敌人到恋人的身份互换喜剧。WeTV 独家播出。",
     "status": "completed",
     "watchLinks": [
-      {"platform": "WeTV", "url": "https://wetv.vip/"}
+      {
+        "platform": "WeTV",
+        "url": "https://wetv.vip/"
+      }
     ]
   }
 ]
