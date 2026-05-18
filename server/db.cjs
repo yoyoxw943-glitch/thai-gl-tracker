@@ -54,10 +54,16 @@ function initTables() {
       synopsis TEXT NOT NULL DEFAULT '',
       status TEXT NOT NULL DEFAULT 'upcoming',
       watch_links TEXT NOT NULL DEFAULT '[]',
-        sort_order INTEGER NOT NULL DEFAULT 0,
+      sort_order INTEGER NOT NULL DEFAULT 0,
       created_at TEXT DEFAULT (datetime('now'))
     );
   `)
+
+  // Migrate: add sort_order if missing (safe to run on existing DBs)
+  const cols = db.prepare("PRAGMA table_info('series')").all()
+  if (!cols.some(c => c.name === 'sort_order')) {
+    db.prepare('ALTER TABLE series ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0').run()
+  }
 }
 
 module.exports = { getDb }

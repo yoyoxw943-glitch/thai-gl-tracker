@@ -43,6 +43,7 @@ async function getClient() {
       sort_order INTEGER NOT NULL DEFAULT 0,
       created_at TIMESTAMP DEFAULT NOW()
     )`)
+      await db.query(`ALTER TABLE series ADD COLUMN IF NOT EXISTS sort_order INTEGER NOT NULL DEFAULT 0`)
   } else {
     const { default: Database } = await import('better-sqlite3')
     const path = await import('path')
@@ -91,6 +92,11 @@ async function getClient() {
         created_at TEXT DEFAULT (datetime('now'))
       );
     `)
+
+      const cols2 = db.prepare("PRAGMA table_info('series')").all()
+      if (!cols2.some(c => c.name === 'sort_order')) {
+        db.prepare('ALTER TABLE series ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0').run()
+      }
     dbType = 'sqlite'
   }
 }
