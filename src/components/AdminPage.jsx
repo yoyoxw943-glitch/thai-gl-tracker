@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 const API = '/api'
 const EMPTY_SERIES = {
@@ -16,6 +16,9 @@ export default function AdminPage({ onClose }) {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
+  const dragIdRef = useRef(null)
+  const [dragId, setDragId] = useState(null)
+  const [dragOverId, setDragOverId] = useState(null)
 
   const token = () => localStorage.getItem('token')
 
@@ -85,12 +88,12 @@ export default function AdminPage({ onClose }) {
     }
   }
 
-  const handleReorder = async (s, direction) => {
+  const reorder = async (s, body) => {
     try {
       const res = await fetch(`${API}/series/${s.id}/reorder`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token()}` },
-        body: JSON.stringify({ direction }),
+        body: JSON.stringify(body),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
@@ -98,6 +101,44 @@ export default function AdminPage({ onClose }) {
     } catch (err) {
       setError(err.message)
     }
+  }
+
+  const handleDragStart = (e, s) => {
+    dragIdRef.current = s.id
+    setDragId(s.id)
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/plain', String(s.id))
+  }
+
+  const handleDragOver = (e, s) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    if (s.id !== dragIdRef.current && dragOverId !== s.id) {
+      setDragOverId(s.id)
+    }
+  }
+
+  const handleDragLeave = (e) => {
+    // Only clear if leaving the row, not entering a child element
+    if (e.currentTarget.contains(e.relatedTarget)) return
+    setDragOverId(null)
+  }
+
+  const handleDrop = async (e, s) => {
+    e.preventDefault()
+    const fromId = dragIdRef.current
+    dragIdRef.current = null
+    setDragId(null)
+    setDragOverId(null)
+    if (fromId === s.id || fromId == null) return
+    const targetIdx = seriesList.findIndex(item => item.id === s.id)
+    await reorder({ id: fromId }, { toIndex: targetIdx })
+  }
+
+  const handleDragEnd = () => {
+    dragIdRef.current = null
+    setDragId(null)
+    setDragOverId(null)
   }
 
   const handleDelete = async (s) => {
@@ -241,9 +282,18 @@ export default function AdminPage({ onClose }) {
             </thead>
             <tbody>
               {seriesList.map((s) => (
-                <tr key={s.id}>
+                <tr
+                  key={s.id}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, s)}
+                  onDragOver={(e) => handleDragOver(e, s)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, s)}
+                  onDragEnd={handleDragEnd}
+                  className={(dragOverId === s.id ? 'drag-over ' : '') + (dragId === s.id ? 'dragging' : '')}
+                >
                   <td>{s.id}</td>
-                  <td>{s.titleZh}</td>
+                  <td className="drag-handle">⠿ {s.titleZh}</td>
                   <td>{s.platform}</td>
                   <td>{s.startDate}</td>
                   <td>{s.airedEpisodes}/{s.totalEpisodes}</td>
@@ -253,8 +303,8 @@ export default function AdminPage({ onClose }) {
                     </span>
                   </td>
                   <td>
-                    <button className="admin-order-btn" onClick={() => handleReorder(s, 'up')} title="上移">↑</button>
-                    <button className="admin-order-btn" onClick={() => handleReorder(s, 'down')} title="下移">↓</button>
+                    <button className="admin-order-btn" onClick={() => reorder(s, { direction: 'up' })} title="上移">↑</button>
+                    <button className="admin-order-btn" onClick={() => reorder(s, { direction: 'down' })} title="下移">↓</button>
                   </td>
                   <td>
                     <button className="admin-edit-btn" onClick={() => openEdit(s)}>编辑</button>

@@ -1165,6 +1165,29 @@ button {
   color: var(--accent);
 }
 
+/* Drag and drop */
+.admin-table tbody tr {
+  cursor: default;
+  transition: opacity 0.15s;
+}
+
+.admin-table tbody tr.dragging {
+  opacity: 0.35;
+}
+
+.admin-table tbody tr.drag-over td {
+  border-top: 2px solid var(--accent);
+}
+
+.admin-table .drag-handle {
+  cursor: grab;
+  user-select: none;
+}
+
+.admin-table .drag-handle:active {
+  cursor: grabbing;
+}
+
 /* ========== Refresh indicator ========== */
 .refresh-indicator {
   display: inline-block;

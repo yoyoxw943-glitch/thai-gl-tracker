@@ -231,10 +231,7 @@ app.delete('/api/series/:id', authMiddleware, adminMiddleware, async (req, res) 
 
 app.put('/api/series/:id/reorder', authMiddleware, adminMiddleware, async (req, res) => {
   try {
-    const { direction } = req.body
-    if (!direction || (direction !== 'up' && direction !== 'down')) {
-      return res.status(400).json({ error: 'direction must be "up" or "down"' })
-    }
+    const { direction, toIndex } = req.body
 
     // Get all series in current display order, with id as tiebreaker for equal sort_order
     const all = await query('SELECT id FROM series ORDER BY sort_order ASC, id ASC')
@@ -243,13 +240,23 @@ app.put('/api/series/:id/reorder', authMiddleware, adminMiddleware, async (req, 
 
     if (idx === -1) return res.status(404).json({ error: '剧集不存在' })
 
-    const newIdx = direction === 'up' ? idx - 1 : idx + 1
-    if (newIdx < 0 || newIdx >= ids.length) {
-      return res.json({ swapped: false, message: '已经是最前/最后位置' })
-    }
+    let newIdx
 
-    // Swap positions in the array
-    ;[ids[idx], ids[newIdx]] = [ids[newIdx], ids[idx]]
+    if (toIndex != null) {
+      // Drag to specific position
+      newIdx = Math.max(0, Math.min(ids.length - 1, Number(toIndex)))
+      if (newIdx === idx) return res.json({ swapped: false })
+      ids.splice(idx, 1)
+      ids.splice(newIdx, 0, Number(req.params.id))
+    } else if (direction === 'up' || direction === 'down') {
+      newIdx = direction === 'up' ? idx - 1 : idx + 1
+      if (newIdx < 0 || newIdx >= ids.length) {
+        return res.json({ swapped: false, message: '已经是最前/最后位置' })
+      }
+      ;[ids[idx], ids[newIdx]] = [ids[newIdx], ids[idx]]
+    } else {
+      return res.status(400).json({ error: '需要 direction 或 toIndex 参数' })
+    }
 
     // Re-assign sequential sort_order to all series
     for (let i = 0; i < ids.length; i++) {
