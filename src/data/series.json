@@ -1190,5 +1190,31 @@
       }
     ],
     "sortOrder": 41
+  },
+  {
+    "id": 43,
+    "titleZh": "心之密码",
+    "titleEn": "Heart Code",
+    "titleTh": "รหัสลับ(รัก) มาเฟีย",
+    "poster": "/posters/43.jpg",
+    "platform": "Monomax",
+    "startDate": "2026-01-12",
+    "totalEpisodes": 7,
+    "airedEpisodes": 7,
+    "updateDay": "",
+    "cpName": "Tungpang × Jessie",
+    "synopsis": "蛋糕店老板Vicky是高级警官的女儿，遭遇暗杀未遂后被父亲安排参加7天VIP警察训练。在那里她遇到了救过她的Captain Thara——一位纪律严明的女警官，正在追查自己父亲的死亡真相。被迫的近距离接触让两人擦出火花，但随着政治阴谋和隐藏的谋杀案浮出水面，她们的关系面临重重考验。Mono Original 首部GL剧集，以动作戏和成熟的感情线广受好评。",
+    "status": "completed",
+    "watchLinks": [
+      {
+        "platform": "Monomax",
+        "url": "https://www.monomax.me/"
+      },
+      {
+        "platform": "Bilibili",
+        "url": "https://search.bilibili.com/all?keyword=Heart%20Code%20Thai%20GL"
+      }
+    ],
+    "sortOrder": 42
   }
 ]

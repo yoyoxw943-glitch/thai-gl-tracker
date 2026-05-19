@@ -153,12 +153,41 @@ async function migratePosterPaths() {
   }
 }
 
+async function migrateNewSeries() {
+  try {
+    const exists = await query('SELECT COUNT(*)::int as count FROM series WHERE id = 43')
+    if (exists.rows[0]?.count > 0) return
+    const dbType = process.env.POSTGRES_URL ? 'pg' : 'sqlite'
+    if (dbType === 'pg') {
+      await query(`INSERT INTO series (id, title_zh, title_en, title_th, poster, platform, start_date,
+        total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)`,
+        [43, '心之密码', 'Heart Code', 'รหัสลับ(รัก) มาเฟีย', '/posters/43.jpg', 'Monomax', '2026-01-12',
+          7, 7, '', 'Tungpang × Jessie',
+          '蛋糕店老板Vicky是高级警官的女儿，遭遇暗杀未遂后被父亲安排参加7天VIP警察训练。在那里她遇到了救过她的Captain Thara——一位纪律严明的女警官。Mono Original 首部GL剧集。',
+          'completed', JSON.stringify([{platform:'Monomax',url:'https://www.monomax.me/'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Heart%20Code%20Thai%20GL'}]), 42])
+    } else {
+      await query(`INSERT OR IGNORE INTO series (id, title_zh, title_en, title_th, poster, platform, start_date,
+        total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        [43, '心之密码', 'Heart Code', 'รหัสลับ(รัก) มาเฟีย', '/posters/43.jpg', 'Monomax', '2026-01-12',
+          7, 7, '', 'Tungpang × Jessie',
+          '蛋糕店老板Vicky是高级警官的女儿，遭遇暗杀未遂后被父亲安排参加7天VIP警察训练。在那里她遇到了救过她的Captain Thara。Mono Original 首部GL剧集。',
+          'completed', JSON.stringify([{platform:'Monomax',url:'https://www.monomax.me/'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Heart%20Code%20Thai%20GL'}]), 42])
+    }
+    console.log('Migrated: added series 43 (Heart Code)')
+  } catch (e) {
+    console.error('Migration 43 failed:', e.message)
+  }
+}
+
 // ─── Series Routes ───
 
 app.get('/api/series', async (req, res) => {
   try {
     await seedIfEmpty()
     await migratePosterPaths()
+    await migrateNewSeries()
     const result = await query('SELECT * FROM series ORDER BY sort_order ASC, start_date DESC')
     res.json({ series: result.rows.map(formatSeries) })
   } catch (e) {
