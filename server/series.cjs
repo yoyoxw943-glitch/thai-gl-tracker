@@ -92,24 +92,29 @@ function setupSeriesRoutes(app) {
       return res.status(400).json({ error: 'direction must be "up" or "down"' })
     }
 
-    const target = db.prepare('SELECT * FROM series WHERE id = ?').get(req.params.id)
-    if (!target) return res.status(404).json({ error: '剧集不存在' })
+    // Get all series in current display order, with id as tiebreaker for equal sort_order
+    const all = db.prepare('SELECT id FROM series ORDER BY sort_order ASC, id ASC').all()
+    const ids = all.map(r => r.id)
+    const idx = ids.indexOf(Number(req.params.id))
 
-    const targetOrder = target.sort_order
-    const dir = direction === 'up' ? 'DESC' : 'ASC'
-    const op = direction === 'up' ? '<' : '>'
+    if (idx === -1) return res.status(404).json({ error: '剧集不存在' })
 
-    const adjacent = db.prepare(
-      `SELECT * FROM series WHERE sort_order ${op} ? ORDER BY sort_order ${dir} LIMIT 1`
-    ).get(targetOrder)
-
-    if (!adjacent) {
+    const newIdx = direction === 'up' ? idx - 1 : idx + 1
+    if (newIdx < 0 || newIdx >= ids.length) {
       return res.json({ swapped: false, message: '已经是最前/最后位置' })
     }
 
-    const adjOrder = adjacent.sort_order
-    db.prepare('UPDATE series SET sort_order = ? WHERE id = ?').run(adjOrder, target.id)
-    db.prepare('UPDATE series SET sort_order = ? WHERE id = ?').run(targetOrder, adjacent.id)
+    // Swap positions in the array
+    ;[ids[idx], ids[newIdx]] = [ids[newIdx], ids[idx]]
+
+    // Re-assign sequential sort_order to all series
+    const update = db.prepare('UPDATE series SET sort_order = ? WHERE id = ?')
+    const reassign = db.transaction(() => {
+      for (let i = 0; i < ids.length; i++) {
+        update.run(i, ids[i])
+      }
+    })
+    reassign()
 
     res.json({ swapped: true })
   })

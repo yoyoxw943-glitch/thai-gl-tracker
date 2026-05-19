@@ -116,21 +116,23 @@ async function seedIfEmpty() {
     if (count.rows[0]?.count > 0) return false
 
     const dbType = process.env.POSTGRES_URL ? 'pg' : 'sqlite'
-    for (const s of seedData) {
+    for (let i = 0; i < seedData.length; i++) {
+      const s = seedData[i]
+      const sortOrder = s.sortOrder != null ? s.sortOrder : i
       if (dbType === 'pg') {
         await query(`INSERT INTO series (id, title_zh, title_en, title_th, poster, platform, start_date,
           total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order)
           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) ON CONFLICT DO NOTHING`,
           [s.id, s.titleZh, s.titleEn, s.titleTh || '', s.poster || '', s.platform, s.startDate,
            s.totalEpisodes, s.airedEpisodes, s.updateDay || '', s.cpName || '', s.synopsis || '',
-           s.status, JSON.stringify(s.watchLinks || []), s.sortOrder ?? 0])
+           s.status, JSON.stringify(s.watchLinks || []), sortOrder])
       } else {
         await query(`INSERT OR IGNORE INTO series (id, title_zh, title_en, title_th, poster, platform, start_date,
           total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order)
           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [s.id, s.titleZh, s.titleEn, s.titleTh || '', s.poster || '', s.platform, s.startDate,
            s.totalEpisodes, s.airedEpisodes, s.updateDay || '', s.cpName || '', s.synopsis || '',
-           s.status, JSON.stringify(s.watchLinks || []), s.sortOrder ?? 0])
+           s.status, JSON.stringify(s.watchLinks || []), sortOrder])
       }
     }
     return true
@@ -234,25 +236,25 @@ app.put('/api/series/:id/reorder', authMiddleware, adminMiddleware, async (req, 
       return res.status(400).json({ error: 'direction must be "up" or "down"' })
     }
 
-    const target = await query('SELECT * FROM series WHERE id = $1', [req.params.id])
-    if (target.rows.length === 0) return res.status(404).json({ error: '剧集不存在' })
+    // Get all series in current display order, with id as tiebreaker for equal sort_order
+    const all = await query('SELECT id FROM series ORDER BY sort_order ASC, id ASC')
+    const ids = all.rows.map(r => r.id)
+    const idx = ids.indexOf(Number(req.params.id))
 
-    const targetOrder = target.rows[0].sort_order
-    const dir = direction === 'up' ? 'DESC' : 'ASC'
-    const op = direction === 'up' ? '<' : '>'
+    if (idx === -1) return res.status(404).json({ error: '剧集不存在' })
 
-    const adjacent = await query(
-      `SELECT * FROM series WHERE sort_order ${op} $1 ORDER BY sort_order ${dir} LIMIT 1`,
-      [targetOrder]
-    )
-
-    if (adjacent.rows.length === 0) {
+    const newIdx = direction === 'up' ? idx - 1 : idx + 1
+    if (newIdx < 0 || newIdx >= ids.length) {
       return res.json({ swapped: false, message: '已经是最前/最后位置' })
     }
 
-    const adjOrder = adjacent.rows[0].sort_order
-    await query('UPDATE series SET sort_order = $1 WHERE id = $2', [adjOrder, target.rows[0].id])
-    await query('UPDATE series SET sort_order = $1 WHERE id = $2', [targetOrder, adjacent.rows[0].id])
+    // Swap positions in the array
+    ;[ids[idx], ids[newIdx]] = [ids[newIdx], ids[idx]]
+
+    // Re-assign sequential sort_order to all series
+    for (let i = 0; i < ids.length; i++) {
+      await query('UPDATE series SET sort_order = $1 WHERE id = $2', [i, ids[i]])
+    }
 
     res.json({ swapped: true })
   } catch (e) {
