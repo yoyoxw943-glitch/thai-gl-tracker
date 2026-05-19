@@ -159,6 +159,7 @@ button {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .series-count {
@@ -168,6 +169,36 @@ button {
 .filter-hint {
   color: var(--text-dim);
   font-size: 0.85rem;
+}
+
+/* Sort */
+.sort-group {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sort-label {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.sort-select {
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 0.78rem;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.sort-select:focus {
+  border-color: var(--accent);
 }
 
 /* Series Grid */
@@ -1061,9 +1092,18 @@ button {
 }
 
 /* Admin Table */
+.admin-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .admin-list h3 {
   font-size: 0.95rem;
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 
 .admin-table-wrap {

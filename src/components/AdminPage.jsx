@@ -19,6 +19,7 @@ export default function AdminPage({ onClose }) {
   const dragIdRef = useRef(null)
   const [dragId, setDragId] = useState(null)
   const [dragOverId, setDragOverId] = useState(null)
+  const [sortBy, setSortBy] = useState('default')
 
   const token = () => localStorage.getItem('token')
 
@@ -265,7 +266,17 @@ export default function AdminPage({ onClose }) {
 
       {/* Series List */}
       <div className="admin-list">
-        <h3>现有剧集 ({seriesList.length})</h3>
+        <div className="admin-list-header">
+          <h3>现有剧集 ({seriesList.length})</h3>
+          <div className="sort-group">
+            <label className="sort-label">排序：</label>
+            <select className="sort-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+              <option value="default">默认顺序</option>
+              <option value="newest">最新开播</option>
+              <option value="oldest">最早开播</option>
+            </select>
+          </div>
+        </div>
         <div className="admin-table-wrap">
           <table className="admin-table">
             <thead>
@@ -281,7 +292,12 @@ export default function AdminPage({ onClose }) {
               </tr>
             </thead>
             <tbody>
-              {seriesList.map((s) => (
+              {(sortBy === 'newest'
+                ? [...seriesList].sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
+                : sortBy === 'oldest'
+                  ? [...seriesList].sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
+                  : seriesList
+              ).map((s) => (
                 <tr
                   key={s.id}
                   draggable

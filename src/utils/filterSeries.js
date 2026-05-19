@@ -1,6 +1,9 @@
 export function filterSeries(series, { platforms, months, status }) {
   return series.filter((s) => {
-    if (platforms.length > 0 && !platforms.includes(s.platform)) return false
+    if (platforms.length > 0) {
+      const sPlatforms = [s.platform, ...(s.watchLinks || []).map((l) => l.platform)]
+      if (!platforms.some((p) => sPlatforms.includes(p))) return false
+    }
     if (months.length > 0) {
       const d = new Date(s.startDate)
       const m = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
@@ -21,7 +24,15 @@ export function getAvailableMonths(series) {
 }
 
 export function getAvailablePlatforms(series) {
-  return [...new Set(series.map((s) => s.platform))].sort()
+  const platforms = new Set(series.map((s) => s.platform))
+  // Also collect platforms from watchLinks (e.g. Bilibili, Netflix, YouTube)
+  series.forEach((s) => {
+    if (s.watchLinks) {
+      s.watchLinks.forEach((l) => platforms.add(l.platform))
+    }
+  })
+  platforms.delete('')
+  return [...platforms].sort()
 }
 
 export function getRecentThreeMonths(series) {

@@ -24,6 +24,7 @@ function AppContent() {
   const [selectedPlatforms, setSelectedPlatforms] = useState([])
   const [selectedMonths, setSelectedMonths] = useState([])
   const [statusFilter, setStatusFilter] = useState('')
+  const [sortBy, setSortBy] = useState('default')
   const [seriesData, setSeriesData] = useState(fallbackData)
   const [showAdmin, setShowAdmin] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
@@ -80,7 +81,15 @@ function AppContent() {
     )
   }
 
-  const displaySeries = filtered
+  const displaySeries = useMemo(() => {
+    if (sortBy === 'newest') {
+      return [...filtered].sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
+    }
+    if (sortBy === 'oldest') {
+      return [...filtered].sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
+    }
+    return filtered
+  }, [filtered, sortBy])
 
   // Admin page
   if (showAdmin && isAdmin) {
@@ -131,6 +140,14 @@ function AppContent() {
         ) : (
           <span className="filter-hint">全部剧集</span>
         )}
+        <div className="sort-group">
+          <label className="sort-label">排序：</label>
+          <select className="sort-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+            <option value="default">默认顺序</option>
+            <option value="newest">最新开播</option>
+            <option value="oldest">最早开播</option>
+          </select>
+        </div>
       </section>
 
       <div className="series-grid">
