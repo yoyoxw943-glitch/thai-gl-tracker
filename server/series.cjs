@@ -2,9 +2,21 @@ const { getDb } = require('./db.cjs')
 const { authMiddleware, adminMiddleware } = require('./auth.cjs')
 
 function setupSeriesRoutes(app) {
+  // One-time migration: .svg → .jpg poster paths
+  function migratePosters(db) {
+    try {
+      const count = db.prepare("SELECT COUNT(*) as count FROM series WHERE poster LIKE '%.svg'").get()
+      if (count.count > 0) {
+        db.prepare("UPDATE series SET poster = REPLACE(poster, '.svg', '.jpg') WHERE poster LIKE '%.svg'").run()
+        console.log(`Migrated ${count.count} poster paths from .svg to .jpg`)
+      }
+    } catch {}
+  }
+
   // Get all series
   app.get('/api/series', (req, res) => {
     const db = getDb()
+    migratePosters(db)
     const rows = db.prepare('SELECT * FROM series ORDER BY sort_order ASC, start_date DESC').all()
     const series = rows.map(formatSeries)
     res.json({ series })

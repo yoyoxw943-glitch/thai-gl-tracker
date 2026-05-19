@@ -142,11 +142,23 @@ async function seedIfEmpty() {
   }
 }
 
+async function migratePosterPaths() {
+  try {
+    const count = await query("SELECT COUNT(*)::int as count FROM series WHERE poster LIKE '%.svg'")
+    if (count.rows[0]?.count === 0) return
+    await query("UPDATE series SET poster = REPLACE(poster, '.svg', '.jpg') WHERE poster LIKE '%.svg'")
+    console.log(`Migrated ${count.rows[0].count} poster paths from .svg to .jpg`)
+  } catch (e) {
+    // Ignore migration errors — column might not exist yet
+  }
+}
+
 // ─── Series Routes ───
 
 app.get('/api/series', async (req, res) => {
   try {
     await seedIfEmpty()
+    await migratePosterPaths()
     const result = await query('SELECT * FROM series ORDER BY sort_order ASC, start_date DESC')
     res.json({ series: result.rows.map(formatSeries) })
   } catch (e) {
