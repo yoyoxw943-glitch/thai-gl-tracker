@@ -154,30 +154,27 @@ async function migratePosterPaths() {
 }
 
 async function migrateNewSeries() {
+  const newSeries = [
+    [43, '心之密码', 'Heart Code', 'รหัสลับ(รัก) มาเฟีย', '/posters/43.jpg', 'Monomax', '2026-01-12', 7, 7, '', 'Tungpang × Jessie', '蛋糕店老板Vicky是高级警官的女儿，遭遇暗杀未遂后被父亲安排参加7天VIP警察训练。在那里她遇到了救过她的Captain Thara。Mono Original 首部GL剧集。', 'completed', JSON.stringify([{platform:'Monomax',url:'https://www.monomax.me/'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Heart%20Code%20Thai%20GL'}])],
+    [44, '水之魅影', '4 Elements: The Water', 'น้ำคำณเวท', '/posters/44.jpg', 'iQIYI', '2026-04-11', 8, 8, '', 'Engfa × Charlotte', '四元素系列第二部《水》。North Star Entertainment 出品，Engfa Waraha 与 Charlotte Austin 主演。', 'completed', JSON.stringify([{platform:'iQIYI',url:'https://www.iq.com/search/4%20Elements%20The%20Water'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=4%20Elements%20The%20Water'}])],
+    [45, '宿敌恋人', 'Enemies With Benefits', 'ลัลล์ไม่ชอบไวน์', '/posters/45.jpg', 'GMMTV / YouTube', '2026-05-03', 10, 0, '周日', 'Jan × Jingjing', '两个部门主管在公司里水火不容，却在一夜意外之后开始了秘密的床伴关系。GMMTV 2026年GL力作。', 'airing', JSON.stringify([{platform:'YouTube',url:'https://www.youtube.com/results?search_query=Enemies+With+Benefits+Thai+GL'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Enemies%20With%20Benefits%20Thai%20GL'}])],
+    [46, '只属于我的天使', 'Be My Angel', '', '/posters/46.jpg', 'iQIYI', '2026-05-07', 8, 8, '', 'BamBam × Baipor', '天使与凡人的禁忌爱情。Penny Studio 出品，iQIYI 同步播出。', 'completed', JSON.stringify([{platform:'iQIYI',url:'https://www.iq.com/search/Be%20My%20Angel'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Be%20My%20Angel%20Thai%20GL'}])],
+    [49, '女王危爱', 'Dangerous Queen', '', '/posters/49.jpg', 'S.Nur Entertainment / YouTube', '2025-11-08', 8, 8, '', 'Tangkwa × Nur', '一位权势滔天的女王与一位普通女孩的危险爱情游戏。S.Nur Entertainment 出品。', 'completed', JSON.stringify([{platform:'YouTube',url:'https://www.youtube.com/results?search_query=Dangerous+Queen+Thai+GL'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Dangerous%20Queen%20Thai%20GL'}])]
+  ]
   try {
-    const exists = await query('SELECT COUNT(*)::int as count FROM series WHERE id = 43')
-    if (exists.rows[0]?.count > 0) return
     const dbType = process.env.POSTGRES_URL ? 'pg' : 'sqlite'
-    if (dbType === 'pg') {
-      await query(`INSERT INTO series (id, title_zh, title_en, title_th, poster, platform, start_date,
-        total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order)
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)`,
-        [43, '心之密码', 'Heart Code', 'รหัสลับ(รัก) มาเฟีย', '/posters/43.jpg', 'Monomax', '2026-01-12',
-          7, 7, '', 'Tungpang × Jessie',
-          '蛋糕店老板Vicky是高级警官的女儿，遭遇暗杀未遂后被父亲安排参加7天VIP警察训练。在那里她遇到了救过她的Captain Thara——一位纪律严明的女警官。Mono Original 首部GL剧集。',
-          'completed', JSON.stringify([{platform:'Monomax',url:'https://www.monomax.me/'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Heart%20Code%20Thai%20GL'}]), 42])
-    } else {
-      await query(`INSERT OR IGNORE INTO series (id, title_zh, title_en, title_th, poster, platform, start_date,
-        total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-        [43, '心之密码', 'Heart Code', 'รหัสลับ(รัก) มาเฟีย', '/posters/43.jpg', 'Monomax', '2026-01-12',
-          7, 7, '', 'Tungpang × Jessie',
-          '蛋糕店老板Vicky是高级警官的女儿，遭遇暗杀未遂后被父亲安排参加7天VIP警察训练。在那里她遇到了救过她的Captain Thara。Mono Original 首部GL剧集。',
-          'completed', JSON.stringify([{platform:'Monomax',url:'https://www.monomax.me/'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Heart%20Code%20Thai%20GL'}]), 42])
+    for (const s of newSeries) {
+      const exists = await query('SELECT COUNT(*)::int as count FROM series WHERE id = $1', [s[0]])
+      if (exists.rows[0]?.count > 0) continue
+      if (dbType === 'pg') {
+        await query(`INSERT INTO series (id, title_zh, title_en, title_th, poster, platform, start_date, total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)`, [...s, s[0] - 1])
+      } else {
+        await query(`INSERT OR IGNORE INTO series (id, title_zh, title_en, title_th, poster, platform, start_date, total_episodes, aired_episodes, update_day, cp_name, synopsis, status, watch_links, sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, [...s, s[0] - 1])
+      }
+      console.log('Migrated: added series', s[0], s[1])
     }
-    console.log('Migrated: added series 43 (Heart Code)')
   } catch (e) {
-    console.error('Migration 43 failed:', e.message)
+    console.error('Migration new series failed:', e.message)
   }
 }
 

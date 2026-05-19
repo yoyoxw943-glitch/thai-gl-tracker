@@ -1217,5 +1217,85 @@ export default [
       }
     ],
     "sortOrder": 42
+  },
+  {
+    "id": 44,
+    "titleZh": "水之魅影",
+    "titleEn": "4 Elements: The Water",
+    "titleTh": "น้ำคำณเวท",
+    "poster": "/posters/44.jpg",
+    "platform": "iQIYI",
+    "startDate": "2026-04-11",
+    "totalEpisodes": 8,
+    "airedEpisodes": 8,
+    "updateDay": "",
+    "cpName": "Engfa × Charlotte",
+    "synopsis": "四元素系列第二部《水》。讲述水之元素守护者与凡人女孩的奇幻爱情故事。North Star Entertainment 出品，Engfa Waraha 与 Charlotte Austin 主演。",
+    "status": "completed",
+    "watchLinks": [
+      {"platform": "iQIYI", "url": "https://www.iq.com/search/4%20Elements%20The%20Water"},
+      {"platform": "Bilibili", "url": "https://search.bilibili.com/all?keyword=4%20Elements%20The%20Water"}
+    ],
+    "sortOrder": 43
+  },
+  {
+    "id": 45,
+    "titleZh": "宿敌恋人",
+    "titleEn": "Enemies With Benefits",
+    "titleTh": "ลัลล์ไม่ชอบไวน์",
+    "poster": "/posters/45.jpg",
+    "platform": "GMMTV / YouTube",
+    "startDate": "2026-05-03",
+    "totalEpisodes": 10,
+    "airedEpisodes": 3,
+    "updateDay": "周日",
+    "cpName": "Jan × Jingjing",
+    "synopsis": "两个部门主管在公司里水火不容，却在一夜意外之后开始了秘密的床伴关系。她们在办公室里维持着宿敌的表象，私下却越来越难以控制对彼此的感情。GMMTV 2026年GL力作，JanJingjing 与 KapookCiize 双CP出演。",
+    "status": "airing",
+    "watchLinks": [
+      {"platform": "YouTube", "url": "https://www.youtube.com/results?search_query=Enemies+With+Benefits+Thai+GL"},
+      {"platform": "Bilibili", "url": "https://search.bilibili.com/all?keyword=Enemies%20With%20Benefits%20Thai%20GL"}
+    ],
+    "sortOrder": 44
+  },
+  {
+    "id": 46,
+    "titleZh": "只属于我的天使",
+    "titleEn": "Be My Angel",
+    "titleTh": "",
+    "poster": "/posters/46.jpg",
+    "platform": "iQIYI",
+    "startDate": "2026-05-07",
+    "totalEpisodes": 8,
+    "airedEpisodes": 8,
+    "updateDay": "",
+    "cpName": "BamBam × Baipor",
+    "synopsis": "天使与凡人的禁忌爱情，在命运的安排下她们相遇、相爱，却必须面对身份与规则的考验。Penny Studio 出品，iQIYI 同步播出。",
+    "status": "completed",
+    "watchLinks": [
+      {"platform": "iQIYI", "url": "https://www.iq.com/search/Be%20My%20Angel"},
+      {"platform": "Bilibili", "url": "https://search.bilibili.com/all?keyword=Be%20My%20Angel%20Thai%20GL"}
+    ],
+    "sortOrder": 45
+  },
+  {
+    "id": 49,
+    "titleZh": "女王危爱",
+    "titleEn": "Dangerous Queen",
+    "titleTh": "",
+    "poster": "/posters/49.jpg",
+    "platform": "S.Nur Entertainment / YouTube",
+    "startDate": "2025-11-08",
+    "totalEpisodes": 8,
+    "airedEpisodes": 8,
+    "updateDay": "",
+    "cpName": "Tangkwa × Nur",
+    "synopsis": "一位权势滔天的女王与一位普通女孩的危险爱情游戏，权力、欲望与真心交织。S.Nur Entertainment 出品。",
+    "status": "completed",
+    "watchLinks": [
+      {"platform": "YouTube", "url": "https://www.youtube.com/results?search_query=Dangerous+Queen+Thai+GL"},
+      {"platform": "Bilibili", "url": "https://search.bilibili.com/all?keyword=Dangerous%20Queen%20Thai%20GL"}
+    ],
+    "sortOrder": 46
   }
 ];
