@@ -40,7 +40,6 @@ export default function SeriesCard({ series }) {
         <h3 className="card-title">{series.titleZh}</h3>
         <p className="card-title-en">{series.titleEn}</p>
         <div className="card-meta">
-          <span className="card-platform">{series.platform}</span>
           <span className="card-cp">{series.cpName}</span>
         </div>
         <div className="card-progress">
