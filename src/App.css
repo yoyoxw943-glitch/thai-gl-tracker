@@ -382,30 +382,6 @@ button {
   color: var(--text-dim);
 }
 
-.card-detail {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-  animation: fadeIn 0.25s ease;
-}
-
-.card-synopsis {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  margin-bottom: 8px;
-  line-height: 1.5;
-}
-
-.card-date {
-  font-size: 0.78rem;
-  color: var(--text-dim);
-}
-
-.card-thai {
-  font-size: 0.78rem;
-  color: var(--text-dim);
-}
-
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: translateY(0); }
@@ -649,22 +625,31 @@ button {
 .card-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
   align-items: center;
 }
 
-.watch-link {
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 0.7rem;
+.watch-label {
+  font-size: 0.75rem;
+  color: var(--text-dim);
   font-weight: 500;
+}
+
+.watch-link {
+  padding: 7px 16px;
+  border-radius: 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
   text-decoration: none;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
 }
 
 .watch-link:hover {
-  opacity: 0.8;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .watch-youtube {
@@ -707,10 +692,116 @@ button {
   color: #9090a8;
 }
 
-.watch-hint {
-  font-size: 0.65rem;
+
+/* ========== Series Detail Page ========== */
+.detail-page {
+  padding: 10px 0 40px;
+}
+
+.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  margin-bottom: 24px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.detail-back:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 36px;
+  align-items: start;
+}
+
+.detail-poster {
+  position: relative;
+  aspect-ratio: 2/3;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #1a1a28;
+  border: 1px solid var(--border);
+}
+
+.detail-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-fallback {
+  height: 100%;
+}
+
+.detail-content {
+  padding-top: 0;
+}
+
+.detail-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.detail-title-en {
+  font-size: 1.05rem;
   color: var(--text-dim);
-  margin-left: 4px;
+  margin-bottom: 4px;
+}
+
+.detail-title-th {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+
+.detail-meta {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.detail-synopsis {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin: 16px 0 20px;
+  max-width: 640px;
+}
+
+.detail-links {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.detail-links-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.detail-links-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 /* ========== Review Section ========== */
@@ -1258,5 +1349,23 @@ button {
     display: flex;
     justify-content: center;
     margin-bottom: 8px;
+  }
+
+  .detail-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .detail-poster {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .detail-title {
+    font-size: 1.3rem;
+  }
+
+  .detail-synopsis {
+    font-size: 0.88rem;
   }
 }

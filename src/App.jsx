@@ -8,6 +8,7 @@ import FilterBar from './components/FilterBar'
 import SeriesCard from './components/SeriesCard'
 import AuthModal from './components/AuthModal'
 import AdminPage from './components/AdminPage'
+import SeriesDetail from './components/SeriesDetail'
 import './App.css'
 
 export default function App() {
@@ -27,6 +28,7 @@ function AppContent() {
   const [sortBy, setSortBy] = useState('default')
   const [seriesData, setSeriesData] = useState(fallbackData)
   const [showAdmin, setShowAdmin] = useState(false)
+  const [detailSeries, setDetailSeries] = useState(null)
   const [refreshing, setRefreshing] = useState(false)
 
   const fetchSeriesData = useCallback(() => {
@@ -52,8 +54,20 @@ function AppContent() {
 
   // Hash-based routing
   const checkHash = useCallback(() => {
-    setShowAdmin(window.location.hash === '#admin')
-  }, [])
+    const hash = window.location.hash
+    if (hash === '#admin') {
+      setShowAdmin(true)
+      setDetailSeries(null)
+    } else if (hash.startsWith('#series/')) {
+      const id = parseInt(hash.slice('#series/'.length), 10)
+      const found = seriesData.find((s) => s.id === id)
+      setDetailSeries(found || null)
+      setShowAdmin(false)
+    } else {
+      setShowAdmin(false)
+      setDetailSeries(null)
+    }
+  }, [seriesData])
 
   useEffect(() => {
     checkHash()
@@ -96,6 +110,18 @@ function AppContent() {
     return (
       <div className="app">
         <AdminPage onClose={() => { window.location.hash = '' }} />
+      </div>
+    )
+  }
+
+  // Series detail page
+  if (detailSeries) {
+    return (
+      <div className="app">
+        <SeriesDetail
+          series={detailSeries}
+          onClose={() => { window.location.hash = '' }}
+        />
       </div>
     )
   }

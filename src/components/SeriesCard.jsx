@@ -1,8 +1,6 @@
 import { useState } from 'react'
-import ReviewSection from './ReviewSection'
 
 export default function SeriesCard({ series }) {
-  const [expanded, setExpanded] = useState(false)
   const [imgError, setImgError] = useState(false)
   const progress = Math.round((series.airedEpisodes / series.totalEpisodes) * 100)
 
@@ -14,11 +12,12 @@ export default function SeriesCard({ series }) {
 
   const hasPoster = series.poster && !imgError
 
+  const goDetail = () => {
+    window.location.hash = `series/${series.id}`
+  }
+
   return (
-    <article
-      className={`card ${expanded ? 'card-expanded' : ''}`}
-      onClick={() => setExpanded(!expanded)}
-    >
+    <article className="card" onClick={goDetail}>
       <div className="card-poster">
         {hasPoster ? (
           <img
@@ -65,6 +64,7 @@ export default function SeriesCard({ series }) {
         {/* Watch links */}
         {series.watchLinks && series.watchLinks.length > 0 && (
           <div className="card-links">
+            <span className="watch-label">观看</span>
             {series.watchLinks.map((link, i) => (
               <a
                 key={i}
@@ -77,22 +77,6 @@ export default function SeriesCard({ series }) {
                 {link.platform}
               </a>
             ))}
-            <span className="watch-hint">点击跳转观看</span>
-          </div>
-        )}
-
-        {expanded && (
-          <div className="card-detail">
-            <p className="card-synopsis">{series.synopsis}</p>
-            <p className="card-date">
-              播出时间：{series.startDate}
-              {series.status === 'completed' && ' — 已完结'}
-              {series.status === 'airing' && ' — 播出中'}
-            </p>
-            {series.titleTh && <p className="card-thai">泰语名：{series.titleTh}</p>}
-
-            {/* Reviews */}
-            <ReviewSection seriesId={series.id} />
           </div>
         )}
       </div>
