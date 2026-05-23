@@ -175,6 +175,71 @@ async function migrateDayNamesToEnglish() {
   }
 }
 
+async function migrateSynopsesToEnglish() {
+  try {
+    const synopses = {
+      1: "Bookworm Pingrak has crushed on cool senior P'Charm for years but was repeatedly rejected. Years later, after a glamorous makeover, she becomes a rich heiress and the two reunite as on-screen lovers in a GL series, blurring the lines between fiction and reality. Ugly duckling transformation meets show-within-a-show.",
+      2: "Sun secretly loves her best friend's older sister Rafah, a luxury car executive. To win her heart, Sun enters the cutthroat entertainment industry. Scandals, jealousy, and a separated twin sister's secret — a love story about courage and being true to yourself. Star Hunter Entertainment.",
+      3: "A tight-knit friend group spirals into emotional chaos. Ad agency partners Prim and Min, Prim's ex Bambi returning as a client, model Shasha, stylist Gorya and photographer Praew — tangled relationships explode. GMMTV all-star GL lineup. 12 episodes, finale June 1.",
+      4: "Arisa seeks revenge against a capitalist for her mother's sake but unexpectedly falls for the enemy's daughter Lalin. A dark GL tale of vengeance and forbidden love with cinematic noir aesthetics. Faye Peraya's follow-up after 'Blank'. Fabel Entertainment. Completed May 16.",
+      5: "Single mom Inging manages an amusement park. New CEO Lilin plans to demolish it for a tutoring center. As they clash, they grow closer. Thai film award-winner Yada Narilya ('The Medium') makes her GL debut. Channel 3.",
+      6: "City socialite Si is forced into an engagement with country girl Klao to renew her family's land lease. To prove herself, she moves to the countryside where two completely different worlds collide in a story of love and growth. Based on a popular novel. LMSY's third collaboration. Finale May 22.",
+      7: "Six students and one teacher at an elite all-girls school each hide dark secrets. Scandals of the digital age threaten to expose everything — forbidden love, identity deception, and campus noir. FRT Entertainment's first GL series. Thai version aired 4/18, international uncut version on YouTube 6/6.",
+      8: "College sweethearts Aioon and Pafun marry, dreaming of starting a family. When adoption proves difficult, their friend Nubnueng returns with an offer that changes everything. Thailand's first GL series focused on a married lesbian couple. Director Nay Saratswadee ('The Secret of Us').",
+      9: "Princess Catherine of the fictional kingdom Madelin visits Thailand when an assassination attempt forces police officer Wayo to protect her. On the run, they develop a forbidden intimacy. FreenBecky's follow-up to 'The Loyal Pin'. Kantana, airing on iQIYI.",
+      10: "Fresh graduate Mon lands a job at a major corporation only to discover CEO Sam is an arrogant, cold woman. Forced together daily, their animosity slowly turns into something more — but an 8-year age gap and class divide make this relationship a battlefield. The series that launched Thailand's GL boom. IdolFactory.",
+      11: "Small-town girl Meena enters a beauty pageant and meets the dazzling reigning champion Cherine. As they spend time together, subtle feelings blossom. EngLot's debut collaboration — a sweet love story set in the world of pageantry. Grand Her Entertainment.",
+      12: "Dawan keeps dreaming about the same mysterious girl. When new neighbors move in, she discovers the daughter Khimhan is the girl from her dreams. As they grow closer, Dawan realizes these dreams may not be hers alone. A supernatural romance. Star Hunter.",
+      13: "Freshman Manaow, under the strict senior-junior system of the Engineering faculty, falls for second-year student council member Gyoza. AndaLookkaew's signature work. Star Hunter Entertainment.",
+      14: "An ensemble story of multiple couples navigating romance and friendship, centered around dormitory life and campus love.",
+      15: "A lighthearted GL mini-series about the sweet romance between two girls. A feel-good short story.",
+      16: "A GL side story from Club Friday Season 16 featuring EngLot in a special guest appearance as two women caught between love and circumstances.",
+      17: "A 16-year age-gap romance. Young Nueng, at her lowest point, meets older Anueng, and the two heal each other as they fall deeply in love. FayeYoko's breakout hit — emotionally intense with explosive performances. NineStar Studios.",
+      18: "Transfer student Sun secretly crushes on senior Ongsa online using the alias 'Earth'. When she's found out, a mix of sweet and awkward school romance ensues. GMMTV's first GL series. MilkLove's refreshing campus love story. Netflix.",
+      19: "Two girls meet through work and go from strangers to something more in this sweet love story. BmineNear collaboration.",
+      20: "Doctor Fahlada suffered a painful breakup with her ex Earn. Years later, Earn returns as the hospital's new brand ambassador, forcing them to face the feelings that never healed. Channel 3's first GL series. LingOrm's explosive debut. Netflix.",
+      21: "1950s. Princess Anin and noble girl Pin grew up together. After studying in England, Anin realizes she loves Pin — but returns to find Pin betrothed to another. FreenBecky's period romance epic. IdolFactory. Netflix.",
+      22: "Childhood friends Wan and Pleng are torn apart by family misfortune. Reunited years later, they now belong to different worlds. A gut-wrenching emotional rollercoaster. LMSY's first starring GL, hailed as a masterpiece of angst. Kongthup.",
+      23: "Two sisters possess extraordinary powers — one sees the future, the other reverses time. When fate forces them to choose, love becomes the most uncontrollable variable. Fantasy GL series. Kantana, Netflix.",
+      24: "A girl regains her sight and searches for the voice that comforted her in the darkness. OrmFolk's bittersweet romance, adapted from a Chao Planoy novel. Kongthup.",
+      25: "A rich heiress falls for her innocent, pure-hearted childhood friend. GraceOaey's signature work. Zense Entertainment.",
+      26: "Twin sisters Ob-oom and Ai-oon are polar opposites. When Ob-oom falls into a coma on her wedding night, Ai-oon must impersonate her — only to discover Ob-oom's secret lover May, and realize May might not be who she thought. NamtanFilm's GMMTV debut. A story of identity, deception, and unexpected love.",
+      27: "Rookie detective Tul is assigned to partner with forensic doctor Cherran on a murder case. Their conflicting styles clash — but as the trail leads to an elusive serial killer from 18 years ago, they must join forces. EngLot crime thriller. GMMTV/MGI. Netflix.",
+      28: "18-year-old Dokrak meets dentistry student Pam at a cafe and falls at first sight — but her brother Kawi also falls for Pam and asks Dokrak to play matchmaker. Torn between family and love, a heartbreaking story unfolds. OrmFolk's second pairing. Kongthup.",
+      29: "A fantasy romance that transcends time — two souls from different eras meet and fall in love. Channel 3.",
+      30: "To save her family's failing grocery store, a girl returns to her hometown and reunites with a childhood friend. Together at the whale-themed shop, they rediscover life's meaning and love. MilkLove's second pairing. A warm, healing GL from GMMTV. Netflix.",
+      31: "A dangerous love story shrouded in secrets. LMSY's second pairing. High-production dark romance by Change2561.",
+      32: "A bodyguard is assigned to protect a famous singer. Trapped together day and night, mutual annoyance slowly turns into hidden feelings. LingOrm's second pairing. Action + romance. Channel 3, Netflix.",
+      33: "An engineer and a VP — two complete opposites — collide on a project and sparks fly. FayMay's third pairing. A romantic comedy from IdolFactory.",
+      34: "Two women from completely different backgrounds accidentally swap bodies and are forced to live in each other's worlds. Enemies-to-lovers body-swap comedy. WeTV exclusive.",
+      35: "Architect Aokbab returns from Japan to take over her late mother's firm, only to discover ex-lover Mind once plagiarized her design for a competition. Ex-lovers become workplace rivals, and genius architect Rin makes their triangle even more complicated. GraceOaey. Zense.",
+      36: "Four Elements series: Earth. A geologist and a farmer meet in a remote mountain village, where stories between the land and the heart unfold. Freen and Engfa cameo. North Star Entertainment.",
+      37: "Childhood sweethearts reunite after years apart. Can a childhood promise be kept? Channel 3, Netflix.",
+      38: "A love story as toxic as it is unbreakable. North Star Entertainment's highly-rated GL series.",
+      39: "Two souls meet within dreams in this fantasy romance GL series.",
+      40: "Multiple couples weave together a tapestry of love stories. EngLot reunites. MGI / TV Thunder.",
+      41: "AndaLookkaew reunite in this story of love and choices. Star Hunter Entertainment.",
+      42: "Two women navigate survival and love within the walls of a prison. Mine Media.",
+      43: "Cake shop owner Vicky, daughter of a high-ranking police officer, survives an assassination attempt and is sent by her father to a 7-day VIP police training program. There she meets Captain Thara — a disciplined female officer who once saved her life. Mono Original's first GL series.",
+      44: "Four Elements series: Water. The second installment starring Engfa Waraha and Charlotte Austin. North Star Entertainment.",
+      45: "Two department heads are sworn office enemies — until a one-night accident leads to a secret friends-with-benefits arrangement. GMMTV's 2026 GL powerhouse.",
+      46: "A forbidden love between an angel and a mortal. Penny Studio, airing on iQIYI.",
+      49: "A powerful queen and an ordinary girl caught in a dangerous love game. S.Nur Entertainment.",
+      47: "Pun hires someone for a fake marriage but gets scammed out of her money. To uncover the truth, she must get close to actress Ploy, who holds a crucial secret. A love game born from deception — who's the real player? Heart Pop Studio, from the director of 'Petrichor'.",
+      48: "35-year-old Rin, betrayed by her ex-girlfriend and heartbroken, is forced by her father to marry 23-year-old Khem for two years in exchange for inheritance and the CEO position. Rin plans to divorce after two years, but Khem is determined to melt this ice queen's heart. Contract marriage + age gap. Copy A Bangkok's first GL.",
+      50: "Singer Pure, still hung up on ex-girlfriend Air who sacrificed their love for family obligations, can't move on. At a bar, she runs into Air — but it's Air's sister-in-law Loft who falls for Pure at first sight. Caught between unforgettable old love and sincere new passion, what will Pure choose? Motion Minds Entertainment's first GL.",
+      51: "After losing her parents, Lalin runs the family resort alone until she meets Dawan, a girl with amnesia, and reunites with longtime friend Lan. Three hearts intertwine in a complex emotional triangle. MCOT x IDX Entertainment. Sparked controversy for bold intimate scenes.",
+      52: "Aran has secretly loved senior Lene for years. Rejected on graduation day, she leaves town. Five years later, a mysterious letter brings her back — only to find Lene has been murdered. Killed herself, she somehow travels back five years in time. This time, she'll become Lene's personal bodyguard and save her at all costs. MeMindY's first GL. Mystery time-travel romance.",
+      53: "Two young women who can't stand each other are forced to live under the same roof. Daily life slowly transforms their initial disgust into unspoken feelings. Kongthup Production. PraifahBebell's first GL starring role. Short-form, 12 minutes per episode.",
+      54: "Winrawi has only 168 hours to live — hunted by a relentless vengeful spirit. Desperate, she seeks help from Boon, a psychic's daughter, who coldly refuses. As time runs out, she must face the dark secrets of her past. Baanchan Production. Horror suspense GL, adapted from a Zonlicht novel.",
+      55: "Actress Mookmanee rose to fame playing villains. She once fell for reality show partner Grace, only to be torn apart by Grace's mother. Hardened against love, she frequents lesbian club Hera Club. When she meets her future sister-in-law Prangdao, things become impossibly complicated. Two seasons, 11 episodes total.",
+    }
+    for (const [id, syn] of Object.entries(synopses)) {
+      await query('UPDATE series SET synopsis = $1 WHERE id = $2', [syn, id])
+    }
+  } catch (e) { /* ignore */ }
+}
+
 async function migrateNewSeries() {
   const newSeries = [
     [43, '心之密码', 'Heart Code', 'รหัสลับ(รัก) มาเฟีย', '/posters/43.jpg', 'Monomax', '2026-01-12', 7, 7, '', 'Tungpang × Jessie', '蛋糕店老板Vicky是高级警官的女儿，遭遇暗杀未遂后被父亲安排参加7天VIP警察训练。在那里她遇到了救过她的Captain Thara。Mono Original 首部GL剧集。', 'completed', JSON.stringify([{platform:'Monomax',url:'https://www.monomax.me/'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Heart%20Code%20Thai%20GL'}])],
@@ -231,6 +296,7 @@ app.get('/api/series', async (req, res) => {
     await migratePosterPaths()
     await migrateFixHometownRomance()
     await migrateDayNamesToEnglish()
+    await migrateSynopsesToEnglish()
     await migrateNewSeries()
     await autoCompleteSeries()
     const result = await query('SELECT * FROM series ORDER BY sort_order ASC, start_date DESC')
