@@ -155,9 +155,23 @@ async function migratePosterPaths() {
 
 async function migrateFixHometownRomance() {
   try {
-    await query("UPDATE series SET update_day = '周五' WHERE id = 6 AND update_day = '周四'")
+    await query("UPDATE series SET update_day = 'Friday' WHERE id = 6 AND update_day = 'Thursday'")
   } catch (e) {
     // Ignore if column or row doesn't exist
+  }
+}
+
+async function migrateDayNamesToEnglish() {
+  const map = {
+    '周一': 'Monday', '周二': 'Tuesday', '周三': 'Wednesday',
+    '周四': 'Thursday', '周五': 'Friday', '周六': 'Saturday', '周日': 'Sunday',
+  }
+  try {
+    for (const [cn, en] of Object.entries(map)) {
+      await query('UPDATE series SET update_day = $1 WHERE update_day = $2', [en, cn])
+    }
+  } catch (e) {
+    // Ignore
   }
 }
 
@@ -165,14 +179,14 @@ async function migrateNewSeries() {
   const newSeries = [
     [43, '心之密码', 'Heart Code', 'รหัสลับ(รัก) มาเฟีย', '/posters/43.jpg', 'Monomax', '2026-01-12', 7, 7, '', 'Tungpang × Jessie', '蛋糕店老板Vicky是高级警官的女儿，遭遇暗杀未遂后被父亲安排参加7天VIP警察训练。在那里她遇到了救过她的Captain Thara。Mono Original 首部GL剧集。', 'completed', JSON.stringify([{platform:'Monomax',url:'https://www.monomax.me/'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Heart%20Code%20Thai%20GL'}])],
     [44, '水之魅影', '4 Elements: The Water', 'น้ำคำณเวท', '/posters/44.jpg', 'iQIYI', '2026-04-11', 8, 8, '', 'Engfa × Charlotte', '四元素系列第二部《水》。North Star Entertainment 出品，Engfa Waraha 与 Charlotte Austin 主演。', 'completed', JSON.stringify([{platform:'iQIYI',url:'https://www.iq.com/search/4%20Elements%20The%20Water'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=4%20Elements%20The%20Water'}])],
-    [45, '宿敌恋人', 'Enemies With Benefits', 'ลัลล์ไม่ชอบไวน์', '/posters/45.jpg', 'GMMTV / YouTube', '2026-05-03', 10, 0, '周日', 'Jan × Jingjing', '两个部门主管在公司里水火不容，却在一夜意外之后开始了秘密的床伴关系。GMMTV 2026年GL力作。', 'airing', JSON.stringify([{platform:'YouTube',url:'https://www.youtube.com/results?search_query=Enemies+With+Benefits+Thai+GL'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Enemies%20With%20Benefits%20Thai%20GL'}])],
+    [45, '宿敌恋人', 'Enemies With Benefits', 'ลัลล์ไม่ชอบไวน์', '/posters/45.jpg', 'GMMTV / YouTube', '2026-05-03', 10, 0, 'Sunday', 'Jan × Jingjing', '两个部门主管在公司里水火不容，却在一夜意外之后开始了秘密的床伴关系。GMMTV 2026年GL力作。', 'airing', JSON.stringify([{platform:'YouTube',url:'https://www.youtube.com/results?search_query=Enemies+With+Benefits+Thai+GL'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Enemies%20With%20Benefits%20Thai%20GL'}])],
     [46, '只属于我的天使', 'Be My Angel', '', '/posters/46.jpg', 'iQIYI', '2026-05-07', 8, 8, '', 'BamBam × Baipor', '天使与凡人的禁忌爱情。Penny Studio 出品，iQIYI 同步播出。', 'completed', JSON.stringify([{platform:'iQIYI',url:'https://www.iq.com/search/Be%20My%20Angel'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Be%20My%20Angel%20Thai%20GL'}])],
     [49, '女王危爱', 'Dangerous Queen', '', '/posters/49.jpg', 'S.Nur Entertainment / YouTube', '2025-11-08', 8, 8, '', 'Tangkwa × Nur', '一位权势滔天的女王与一位普通女孩的危险爱情游戏。S.Nur Entertainment 出品。', 'completed', JSON.stringify([{platform:'YouTube',url:'https://www.youtube.com/results?search_query=Dangerous+Queen+Thai+GL'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Dangerous%20Queen%20Thai%20GL'}])],
     [47, '爱情玩家', 'Player', 'ไม่อาจห้ามรัก', '/posters/47.jpg', 'iQIYI / YouTube', '2025-10-03', 12, 12, '', 'Ice × Memi', 'Pun雇人假结婚却被骗走钱财，为追查真相她必须接近掌握关键秘密的女演员Ploy。一场始于欺骗的爱情游戏，谁才是真正的玩家？Heart Pop Studio出品，导演曾执导Petrichor。', 'completed', JSON.stringify([{platform:'iQIYI',url:'https://www.iq.com/search/Player%20Thai%20GL'},{platform:'YouTube',url:'https://www.youtube.com/results?search_query=Player%20Thai%20GL'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Player%20Thai%20GL'}])],
     [48, '不被爱的爱', 'Denied Love', 'รินไม่มีวันรัก', '/posters/48.jpg', 'WeTV', '2025-05-29', 10, 10, '', 'Enjoy × June', '35岁的Rin被前女友背叛后心灰意冷，父亲要求她与23岁的Khem结婚两年以换取遗产和总裁之位。Rin打算两年后离婚，但Khem却决心用真心融化这座冰山。契约婚姻+年龄差，Copy A Bangkok首部GL。', 'completed', JSON.stringify([{platform:'WeTV',url:'https://wetv.vip/'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Denied%20Love%20Thai%20GL'}])],
     [50, '情感过山车', 'Roller Coaster', '', '/posters/50.jpg', 'Channel 3 / YouTube', '2025-08-13', 8, 8, '', 'Neko × Aom × Shelly', '歌手Pure被前女友Air为家族婚姻牺牲而分手，一直无法释怀。在酒吧偶遇Air时，却被Air的小姨子Loft一见钟情。夹在难以忘怀的旧爱和真诚热烈的新欢之间，Pure该如何抉择？Motion Minds Entertainment首部GL。', 'completed', JSON.stringify([{platform:'YouTube',url:'https://www.youtube.com/results?search_query=Roller+Coaster+Thai+GL'},{platform:'Channel 3',url:'https://ch3plus.com/'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Roller%20Coaster%20Thai%20GL'}])],
     [51, '闺蜜以上', 'B-Friend', 'เจตนา (ไม่) ลืม', '/posters/51.jpg', 'MCOT / WeTV', '2025-05-31', 12, 12, '', 'Pai × Nam × FayFay', 'Lalin失去父母后独自经营家族度假村，遇到失忆女孩Dawan，又与久别重逢的Lan重聚。三人之间暗生情愫，形成复杂的情感三角。MCOT × IDX Entertainment出品，因大胆的亲密戏引发热议。', 'completed', JSON.stringify([{platform:'WeTV',url:'https://wetv.vip/'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=B-Friend%20Thai%20GL'}])],
-    [52, '逾梦深情', 'Love Beyond Dreams', 'เพื่อเธออีกครั้ง', '/posters/52.jpg', 'iQIYI', '2026-05-06', 10, 2, '周三', 'Aya × Mie', 'Aran暗恋学姐Lene多年，毕业那天表白被拒后远走他乡。五年后收到神秘信件归来却发现Lene已遇害。自己被杀后竟穿越回五年前——这一次她要成为Lene的贴身保镖，不惜一切代价拯救她。MeMindY首部GL，悬疑穿越题材。', 'airing', JSON.stringify([{platform:'iQIYI',url:'https://www.iq.com/search/Love%20Beyond%20Dreams'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Love%20Beyond%20Dreams%20Thai%20GL'}])],
+    [52, '逾梦深情', 'Love Beyond Dreams', 'เพื่อเธออีกครั้ง', '/posters/52.jpg', 'iQIYI', '2026-05-06', 10, 2, 'Wednesday', 'Aya × Mie', 'Aran暗恋学姐Lene多年，毕业那天表白被拒后远走他乡。五年后收到神秘信件归来却发现Lene已遇害。自己被杀后竟穿越回五年前——这一次她要成为Lene的贴身保镖，不惜一切代价拯救她。MeMindY首部GL，悬疑穿越题材。', 'airing', JSON.stringify([{platform:'iQIYI',url:'https://www.iq.com/search/Love%20Beyond%20Dreams'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Love%20Beyond%20Dreams%20Thai%20GL'}])],
     [53, '爱之阴影', 'Shadow of Love', '', '/posters/53.jpg', 'YouTube', '2026-03-24', 24, 24, '', 'Praifah × Bebell', '两个互相看不顺眼的年轻女孩被迫住在同一屋檐下。日常相处让最初的厌恶慢慢转变为不可言说的情愫。Kongthup Production出品，PraifahBebell首次主演GL，短剧形式每集12分钟。', 'completed', JSON.stringify([{platform:'YouTube',url:'https://www.youtube.com/results?search_query=Shadow+of+Love+Thai+GL'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Shadow%20of%20Love%20Thai%20GL'}])],
     [54, '逃亡', 'Runaway', 'หนีไปก็ตายเปล่า', '/posters/54.jpg', 'Channel 3 / YouTube', '2025-11-04', 8, 8, '', 'Music × Plaifah', 'Winrawi只剩168小时可活——被无情的怨灵追杀。绝望中她向灵媒之女Boon求助却遭冷酷拒绝。随时间流逝，她必须直面过去黑暗的秘密。Baanchan Production出品，恐怖悬疑GL，改编自Zonlicht小说。', 'completed', JSON.stringify([{platform:'YouTube',url:'https://www.youtube.com/results?search_query=Runaway+Thai+GL'},{platform:'Channel 3',url:'https://ch3plus.com/'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Runaway%20Thai%20GL'}])],
     [55, '我是恶魔', 'I Am Devil', 'เตือนแล้วนะ... ว่าฉันร้าย', '/posters/55.jpg', 'Channel 9 MCOT HD', '2024-12-25', 7, 7, '', 'Mook × Pinky', '演员Mookmanee因饰演反派走红，曾与真人秀搭档Grace相恋却被对方母亲拆散。对爱情绝望后频繁光顾女同俱乐部Hera Club。当她遇到未来的小姑子Prangdao时，事情变得无比复杂。两季共11集。', 'completed', JSON.stringify([{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=I+Am+Devil+Thai+GL'}])]
@@ -216,6 +230,7 @@ app.get('/api/series', async (req, res) => {
     await seedIfEmpty()
     await migratePosterPaths()
     await migrateFixHometownRomance()
+    await migrateDayNamesToEnglish()
     await migrateNewSeries()
     await autoCompleteSeries()
     const result = await query('SELECT * FROM series ORDER BY sort_order ASC, start_date DESC')
@@ -397,7 +412,7 @@ function calcAired(row) {
   const today = new Date()
   if (today < start) return 0
 
-  const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   const targetDay = dayNames.indexOf(row.update_day)
   if (targetDay === -1) return row.aired_episodes
 

@@ -27,8 +27,8 @@ export default function SeriesCard({ series }) {
           />
         ) : (
           <div className="poster-fallback">
-            <span className="poster-fallback-text">{series.titleZh}</span>
-            <span className="poster-fallback-th">{series.titleEn}</span>
+            <span className="poster-fallback-text">{series.titleEn}</span>
+            <span className="poster-fallback-th">{series.titleZh}</span>
           </div>
         )}
         <span className={`card-status status-${series.status}`}>
@@ -36,7 +36,7 @@ export default function SeriesCard({ series }) {
         </span>
       </div>
       <div className="card-body">
-        <h3 className="card-title">{series.titleZh}</h3>
+        <h3 className="card-title">{series.titleEn}</h3>
         <div className="card-meta">
           <span className="card-cp">{series.cpName}</span>
         </div>

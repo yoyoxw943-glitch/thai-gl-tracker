@@ -27,8 +27,8 @@ export default function SeriesDetail({ series, onClose }) {
             />
           ) : (
             <div className="poster-fallback detail-fallback">
-              <span className="poster-fallback-text">{series.titleZh}</span>
-              <span className="poster-fallback-th">{series.titleEn}</span>
+              <span className="poster-fallback-text">{series.titleEn}</span>
+              <span className="poster-fallback-th">{series.titleZh}</span>
             </div>
           )}
           <span className={`card-status status-${series.status}`}>
@@ -37,8 +37,8 @@ export default function SeriesDetail({ series, onClose }) {
         </div>
 
         <div className="detail-content">
-          <h2 className="detail-title">{series.titleZh}</h2>
-          <p className="detail-title-en">{series.titleEn}</p>
+          <h2 className="detail-title">{series.titleEn}</h2>
+          <p className="detail-title-en">{series.titleZh}</p>
           {series.titleTh && <p className="detail-title-th">Thai: {series.titleTh}</p>}
 
           <div className="detail-meta">
