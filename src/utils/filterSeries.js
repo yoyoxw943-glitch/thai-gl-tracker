@@ -1,7 +1,7 @@
 export function filterSeries(series, { platforms, months, status }) {
   return series.filter((s) => {
     if (platforms.length > 0) {
-      const sPlatforms = [s.platform, ...(s.watchLinks || []).map((l) => l.platform)]
+      const sPlatforms = [...s.platform.split(' / '), ...(s.watchLinks || []).map((l) => l.platform)]
       if (!platforms.some((p) => sPlatforms.includes(p))) return false
     }
     if (months.length > 0) {
@@ -24,9 +24,10 @@ export function getAvailableMonths(series) {
 }
 
 export function getAvailablePlatforms(series) {
-  const platforms = new Set(series.map((s) => s.platform))
-  // Also collect platforms from watchLinks (e.g. Bilibili, Netflix, YouTube)
+  const platforms = new Set()
   series.forEach((s) => {
+    // Split combined platforms like "GMMTV / YouTube" into individual ones
+    s.platform.split(' / ').forEach((p) => platforms.add(p))
     if (s.watchLinks) {
       s.watchLinks.forEach((l) => platforms.add(l.platform))
     }
