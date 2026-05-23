@@ -13,13 +13,13 @@ export default function FilterBar({
 
   const formatMonth = (m) => {
     const [y, mo] = m.split('-')
-    return `${y}年${parseInt(mo)}月`
+    return `${parseInt(mo)}/${y}`
   }
 
   return (
     <div className="filter-bar">
       <div className="filter-group">
-        <label className="filter-label">播出平台</label>
+        <label className="filter-label">Platforms</label>
         <div className="filter-chips">
           {platforms.map((p) => (
             <button
@@ -34,7 +34,7 @@ export default function FilterBar({
       </div>
 
       <div className="filter-group">
-        <label className="filter-label">播出月份</label>
+        <label className="filter-label">Month</label>
         <div className="filter-chips">
           {months.map((m) => (
             <button
@@ -49,13 +49,13 @@ export default function FilterBar({
       </div>
 
       <div className="filter-group">
-        <label className="filter-label">播出状态</label>
+        <label className="filter-label">Status</label>
         <div className="filter-chips">
           {[
-            { value: '', label: '全部' },
-            { value: 'airing', label: '播出中' },
-            { value: 'completed', label: '已完结' },
-            { value: 'upcoming', label: '待播出' },
+            { value: '', label: 'All' },
+            { value: 'airing', label: 'Airing' },
+            { value: 'completed', label: 'Completed' },
+            { value: 'upcoming', label: 'Upcoming' },
           ].map(({ value, label }) => (
             <button
               key={value}
@@ -70,7 +70,7 @@ export default function FilterBar({
 
       {hasFilters && (
         <button className="clear-btn" onClick={onClear}>
-          清除筛选
+          Clear
         </button>
       )}
     </div>

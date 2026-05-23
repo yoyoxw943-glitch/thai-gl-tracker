@@ -134,11 +134,11 @@ function AppContent() {
           {loading ? null : user ? (
             <div className="user-menu">
               <span className="user-name">{user.username}</span>
-              {isAdmin && <a href="#admin" className="admin-link">管理</a>}
-              <button className="user-btn" onClick={logout}>退出</button>
+              {isAdmin && <a href="#admin" className="admin-link">Admin</a>}
+              <button className="user-btn" onClick={logout}>Logout</button>
             </div>
           ) : (
-            <button className="user-btn" onClick={() => setShowAuth(true)}>登录 / 注册</button>
+            <button className="user-btn" onClick={() => setShowAuth(true)}>Login / Register</button>
           )}
         </div>
       </div>
@@ -160,18 +160,18 @@ function AppContent() {
       />
 
       <section className="series-info">
-        <span className="series-count">共 {displaySeries.length} 部剧集{refreshing && <span className="refresh-indicator" title="刷新中..."> ⟳</span>}</span>
+        <span className="series-count">{displaySeries.length} series{refreshing && <span className="refresh-indicator" title="Refreshing..."> &#x27F3;</span>}</span>
         {(selectedPlatforms.length || selectedMonths.length || statusFilter) ? (
-          <span className="filter-hint">（已筛选）</span>
+          <span className="filter-hint">(filtered)</span>
         ) : (
-          <span className="filter-hint">全部剧集</span>
+          <span className="filter-hint">All series</span>
         )}
         <div className="sort-group">
-          <label className="sort-label">排序：</label>
+          <label className="sort-label">Sort: </label>
           <select className="sort-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-            <option value="default">默认顺序</option>
-            <option value="newest">最新开播</option>
-            <option value="oldest">最早开播</option>
+            <option value="default">Default</option>
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
           </select>
         </div>
       </section>
@@ -183,7 +183,7 @@ function AppContent() {
       </div>
 
       {displaySeries.length === 0 && (
-        <div className="empty">没有符合条件的剧集，试试调整筛选条件</div>
+        <div className="empty">No matching series. Try adjusting filters.</div>
       )}
 
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}

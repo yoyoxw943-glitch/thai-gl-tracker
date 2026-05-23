@@ -19,13 +19,13 @@ function generateToken(user) {
 function authMiddleware(req, res, next) {
   const header = req.headers.authorization
   if (!header || !header.startsWith('Bearer ')) {
-    return res.status(401).json({ error: '请先登录' })
+    return res.status(401).json({ error: 'Please login first' })
   }
   try {
     req.user = jwt.verify(header.split(' ')[1], JWT_SECRET)
     next()
   } catch {
-    return res.status(401).json({ error: '登录已过期，请重新登录' })
+    return res.status(401).json({ error: 'Session expired, please login again' })
   }
 }
 
@@ -34,11 +34,11 @@ async function adminMiddleware(req, res, next) {
     const result = await query('SELECT is_admin FROM users WHERE id = $1', [req.user.id])
     const user = result.rows[0]
     if (!user || !user.is_admin) {
-      return res.status(403).json({ error: '需要管理员权限' })
+      return res.status(403).json({ error: 'Admin access required' })
     }
     next()
   } catch {
-    res.status(500).json({ error: '权限验证失败' })
+    res.status(500).json({ error: 'Permission check failed' })
   }
 }
 
@@ -55,12 +55,12 @@ function optionalAuth(req, res, next) {
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { username, email, password } = req.body
-    if (!username || !email || !password) return res.status(400).json({ error: '请填写所有字段' })
-    if (username.length < 2 || username.length > 20) return res.status(400).json({ error: '用户名需要2-20个字符' })
-    if (password.length < 6) return res.status(400).json({ error: '密码至少需要6个字符' })
+    if (!username || !email || !password) return res.status(400).json({ error: 'All fields are required' })
+    if (username.length < 2 || username.length > 20) return res.status(400).json({ error: 'Username must be 2-20 characters' })
+    if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' })
 
     const exist = await query('SELECT id FROM users WHERE email = $1 OR username = $2', [email, username])
-    if (exist.rows.length > 0) return res.status(409).json({ error: '用户名或邮箱已被注册' })
+    if (exist.rows.length > 0) return res.status(409).json({ error: 'Username or email already registered' })
 
     // First user becomes admin
     const total = await query('SELECT COUNT(*)::int as count FROM users')
@@ -76,26 +76,26 @@ app.post('/api/auth/register', async (req, res) => {
     res.json({ token, user: { id: user.id, username: user.username, email: user.email, is_admin: user.is_admin } })
   } catch (e) {
     console.error(e)
-    res.status(500).json({ error: '注册失败' })
+    res.status(500).json({ error: 'Registration failed' })
   }
 })
 
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body
-    if (!email || !password) return res.status(400).json({ error: '请填写邮箱和密码' })
+    if (!email || !password) return res.status(400).json({ error: 'Please enter email and password' })
 
     const result = await query('SELECT * FROM users WHERE email = $1', [email])
     const user = result.rows[0]
     if (!user || !bcrypt.compareSync(password, user.password_hash)) {
-      return res.status(401).json({ error: '邮箱或密码错误' })
+      return res.status(401).json({ error: 'Invalid email or password' })
     }
 
     const token = generateToken(user)
     res.json({ token, user: { id: user.id, username: user.username, email: user.email, is_admin: user.is_admin } })
   } catch (e) {
     console.error(e)
-    res.status(500).json({ error: '登录失败' })
+    res.status(500).json({ error: 'Login failed' })
   }
 })
 
@@ -103,10 +103,10 @@ app.get('/api/auth/me', authMiddleware, async (req, res) => {
   try {
     const result = await query('SELECT id, username, email, is_admin, created_at FROM users WHERE id = $1', [req.user.id])
     const user = result.rows[0]
-    if (!user) return res.status(404).json({ error: '用户不存在' })
+    if (!user) return res.status(404).json({ error: 'User not found' })
     res.json({ user })
   } catch (e) {
-    res.status(500).json({ error: '获取用户信息失败' })
+    res.status(500).json({ error: 'Failed to get user info' })
   }
 })
 
@@ -222,17 +222,17 @@ app.get('/api/series', async (req, res) => {
     res.json({ series: result.rows.map(formatSeries) })
   } catch (e) {
     console.error(e)
-    res.status(500).json({ error: '获取剧集列表失败' })
+    res.status(500).json({ error: 'Failed to get series list' })
   }
 })
 
 app.get('/api/series/:id', async (req, res) => {
   try {
     const result = await query('SELECT * FROM series WHERE id = $1', [req.params.id])
-    if (result.rows.length === 0) return res.status(404).json({ error: '剧集不存在' })
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Series not found' })
     res.json({ series: formatSeries(result.rows[0]) })
   } catch (e) {
-    res.status(500).json({ error: '获取剧集失败' })
+    res.status(500).json({ error: 'Failed to get series' })
   }
 })
 
@@ -241,7 +241,7 @@ app.post('/api/series', authMiddleware, adminMiddleware, async (req, res) => {
     const { titleZh, titleEn, titleTh, poster, platform, startDate,
       totalEpisodes, airedEpisodes, updateDay, cpName, synopsis, status, watchLinks } = req.body
     if (!titleZh || !platform || !startDate) {
-      return res.status(400).json({ error: '标题、平台和开播日期为必填项' })
+      return res.status(400).json({ error: 'Title, platform and start date are required' })
     }
     // Get max sort_order to place new series at the end
     const maxOrder = await query('SELECT COALESCE(MAX(sort_order), -1)::int as max_order FROM series')
@@ -256,14 +256,14 @@ app.post('/api/series', authMiddleware, adminMiddleware, async (req, res) => {
     res.status(201).json({ series: formatSeries(result.rows[0]) })
   } catch (e) {
     console.error(e)
-    res.status(500).json({ error: '添加剧集失败' })
+    res.status(500).json({ error: 'Failed to add series' })
   }
 })
 
 app.put('/api/series/:id', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const r = await query('SELECT * FROM series WHERE id = $1', [req.params.id])
-    if (r.rows.length === 0) return res.status(404).json({ error: '剧集不存在' })
+    if (r.rows.length === 0) return res.status(404).json({ error: 'Series not found' })
     const existing = r.rows[0]
     const { titleZh, titleEn, titleTh, poster, platform, startDate,
       totalEpisodes, airedEpisodes, updateDay, cpName, synopsis, status, watchLinks } = req.body
@@ -285,18 +285,18 @@ app.put('/api/series/:id', authMiddleware, adminMiddleware, async (req, res) => 
     res.json({ series: formatSeries(result.rows[0]) })
   } catch (e) {
     console.error(e)
-    res.status(500).json({ error: '更新剧集失败' })
+    res.status(500).json({ error: 'Failed to update series' })
   }
 })
 
 app.delete('/api/series/:id', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const r = await query('SELECT * FROM series WHERE id = $1', [req.params.id])
-    if (r.rows.length === 0) return res.status(404).json({ error: '剧集不存在' })
+    if (r.rows.length === 0) return res.status(404).json({ error: 'Series not found' })
     await query('DELETE FROM series WHERE id = $1', [req.params.id])
     res.json({ success: true })
   } catch (e) {
-    res.status(500).json({ error: '删除剧集失败' })
+    res.status(500).json({ error: 'Failed to delete series' })
   }
 })
 
@@ -309,7 +309,7 @@ app.put('/api/series/:id/reorder', authMiddleware, adminMiddleware, async (req, 
     const ids = all.rows.map(r => r.id)
     const idx = ids.indexOf(Number(req.params.id))
 
-    if (idx === -1) return res.status(404).json({ error: '剧集不存在' })
+    if (idx === -1) return res.status(404).json({ error: 'Series not found' })
 
     let newIdx
 
@@ -322,11 +322,11 @@ app.put('/api/series/:id/reorder', authMiddleware, adminMiddleware, async (req, 
     } else if (direction === 'up' || direction === 'down') {
       newIdx = direction === 'up' ? idx - 1 : idx + 1
       if (newIdx < 0 || newIdx >= ids.length) {
-        return res.json({ swapped: false, message: '已经是最前/最后位置' })
+        return res.json({ swapped: false, message: 'Already at first/last position' })
       }
       ;[ids[idx], ids[newIdx]] = [ids[newIdx], ids[idx]]
     } else {
-      return res.status(400).json({ error: '需要 direction 或 toIndex 参数' })
+      return res.status(400).json({ error: 'direction or toIndex parameter required' })
     }
 
     // Re-assign sequential sort_order to all series
@@ -337,7 +337,7 @@ app.put('/api/series/:id/reorder', authMiddleware, adminMiddleware, async (req, 
     res.json({ swapped: true })
   } catch (e) {
     console.error(e)
-    res.status(500).json({ error: '排序失败' })
+    res.status(500).json({ error: 'Reorder failed' })
   }
 })
 
@@ -426,19 +426,19 @@ app.get('/api/reviews/:seriesId', optionalAuth, async (req, res) => {
     })
   } catch (e) {
     console.error(e)
-    res.status(500).json({ error: '获取评论失败' })
+    res.status(500).json({ error: 'Failed to get reviews' })
   }
 })
 
 app.post('/api/reviews', authMiddleware, async (req, res) => {
   try {
     const { seriesId, rating, comment } = req.body
-    if (!seriesId || !rating || !comment) return res.status(400).json({ error: '请填写评分和评论' })
-    if (rating < 1 || rating > 5) return res.status(400).json({ error: '评分需要在1-5之间' })
-    if (comment.length < 2) return res.status(400).json({ error: '评论至少2个字符' })
+    if (!seriesId || !rating || !comment) return res.status(400).json({ error: 'Please enter rating and comment' })
+    if (rating < 1 || rating > 5) return res.status(400).json({ error: 'Rating must be 1-5' })
+    if (comment.length < 2) return res.status(400).json({ error: 'Comment must be at least 2 characters' })
 
     const exist = await query('SELECT id FROM reviews WHERE series_id = $1 AND user_id = $2', [seriesId, req.user.id])
-    if (exist.rows.length > 0) return res.status(409).json({ error: '你已经点评过这部剧集了' })
+    if (exist.rows.length > 0) return res.status(409).json({ error: 'You already reviewed this series' })
 
     const result = await query(
       'INSERT INTO reviews (series_id, user_id, username, rating, comment) VALUES ($1, $2, $3, $4, $5) RETURNING *',
@@ -447,15 +447,15 @@ app.post('/api/reviews', authMiddleware, async (req, res) => {
     res.json({ review: result.rows[0] })
   } catch (e) {
     console.error(e)
-    res.status(500).json({ error: '发布评论失败' })
+    res.status(500).json({ error: 'Failed to post review' })
   }
 })
 
 app.put('/api/reviews/:id', authMiddleware, async (req, res) => {
   try {
     const r = await query('SELECT * FROM reviews WHERE id = $1', [req.params.id])
-    if (!r.rows[0]) return res.status(404).json({ error: '点评不存在' })
-    if (r.rows[0].user_id !== req.user.id) return res.status(403).json({ error: '只能修改自己的点评' })
+    if (!r.rows[0]) return res.status(404).json({ error: 'Review not found' })
+    if (r.rows[0].user_id !== req.user.id) return res.status(403).json({ error: 'Can only edit your own review' })
 
     const { rating, comment } = req.body
     const result = await query(
@@ -464,20 +464,20 @@ app.put('/api/reviews/:id', authMiddleware, async (req, res) => {
     )
     res.json({ review: result.rows[0] })
   } catch (e) {
-    res.status(500).json({ error: '更新失败' })
+    res.status(500).json({ error: 'Update failed' })
   }
 })
 
 app.delete('/api/reviews/:id', authMiddleware, async (req, res) => {
   try {
     const r = await query('SELECT * FROM reviews WHERE id = $1', [req.params.id])
-    if (!r.rows[0]) return res.status(404).json({ error: '点评不存在' })
-    if (r.rows[0].user_id !== req.user.id) return res.status(403).json({ error: '只能删除自己的点评' })
+    if (!r.rows[0]) return res.status(404).json({ error: 'Review not found' })
+    if (r.rows[0].user_id !== req.user.id) return res.status(403).json({ error: 'Can only delete your own review' })
 
     await query('DELETE FROM reviews WHERE id = $1', [req.params.id])
     res.json({ success: true })
   } catch (e) {
-    res.status(500).json({ error: '删除失败' })
+    res.status(500).json({ error: 'Delete failed' })
   }
 })
 

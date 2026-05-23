@@ -4,9 +4,9 @@ export default function SeriesCard({ series }) {
   const [imgError, setImgError] = useState(false)
 
   const statusLabels = {
-    airing: '播出中',
-    completed: '已完结',
-    upcoming: '待播出',
+    airing: 'Airing',
+    completed: 'Completed',
+    upcoming: 'Upcoming',
   }
 
   const hasPoster = series.poster && !imgError

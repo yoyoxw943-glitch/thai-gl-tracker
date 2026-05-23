@@ -38,8 +38,8 @@ export default function ReviewSection({ seriesId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!myRating) { setError('请选择评分'); return }
-    if (!myComment.trim()) { setError('请填写评论'); return }
+    if (!myRating) { setError('Please select a rating'); return }
+    if (!myComment.trim()) { setError('Please write a comment'); return }
     setError('')
     setSubmitting(true)
 
@@ -69,7 +69,7 @@ export default function ReviewSection({ seriesId }) {
       setEditingId(null)
       fetchReviews()
     } catch (err) {
-      setError('提交失败，请重试')
+      setError('Failed to submit, please retry')
     } finally {
       setSubmitting(false)
     }
@@ -82,7 +82,7 @@ export default function ReviewSection({ seriesId }) {
   }
 
   const handleDelete = async (reviewId) => {
-    if (!confirm('确定删除这条点评吗？')) return
+    if (!confirm('Delete this review?')) return
     const token = localStorage.getItem('token')
     await fetch(`${API}/reviews/${reviewId}`, {
       method: 'DELETE',
@@ -91,15 +91,15 @@ export default function ReviewSection({ seriesId }) {
     fetchReviews()
   }
 
-  if (loading) return <div className="review-loading">加载评论...</div>
+  if (loading) return <div className="review-loading">Loading reviews...</div>
 
   return (
     <div className="review-section" onClick={(e) => e.stopPropagation()}>
       <div className="review-header">
-        <h4 className="review-title">观众点评</h4>
+        <h4 className="review-title">Reviews</h4>
         {reviewCount > 0 && (
           <span className="review-avg">
-            ★ {avgRating} <span className="review-count">({reviewCount}条)</span>
+            ★ {avgRating} <span className="review-count">({reviewCount})</span>
           </span>
         )}
       </div>
@@ -122,13 +122,13 @@ export default function ReviewSection({ seriesId }) {
           <textarea
             value={myComment}
             onChange={(e) => setMyComment(e.target.value)}
-            placeholder="写下你对这部剧的看法..."
+            placeholder="Share your thoughts..."
             rows={3}
             required
           />
           {error && <p className="review-error">{error}</p>}
           <button type="submit" className="review-submit" disabled={submitting}>
-            {editingId ? '更新点评' : '发布点评'}
+            {editingId ? 'Update Review' : 'Post Review'}
           </button>
         </form>
       )}
@@ -156,15 +156,15 @@ export default function ReviewSection({ seriesId }) {
           />
           {error && <p className="review-error">{error}</p>}
           <div className="review-form-actions">
-            <button type="submit" className="review-submit" disabled={submitting}>更新</button>
-            <button type="button" className="review-cancel" onClick={() => { setEditingId(null); setMyRating(0); setMyComment('') }}>取消</button>
+            <button type="submit" className="review-submit" disabled={submitting}>Update</button>
+            <button type="button" className="review-cancel" onClick={() => { setEditingId(null); setMyRating(0); setMyComment('') }}>Cancel</button>
           </div>
         </form>
       )}
 
       {/* Reviews list */}
       {reviews.length === 0 ? (
-        <p className="review-empty">暂无点评，{user ? '成为第一个点评的人吧！' : '登录后即可点评'}</p>
+        <p className="review-empty">{user ? 'No reviews yet. Be the first!' : 'Login to leave a review'}</p>
       ) : (
         <div className="review-list">
           {reviews.map((r) => (
@@ -172,13 +172,13 @@ export default function ReviewSection({ seriesId }) {
               <div className="review-item-header">
                 <span className="review-user">{r.username}</span>
                 <span className="review-stars">{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>
-                <span className="review-date">{new Date(r.created_at).toLocaleDateString('zh-CN')}</span>
+                <span className="review-date">{new Date(r.created_at).toLocaleDateString('en-US')}</span>
               </div>
               <p className="review-comment">{r.comment}</p>
               {r.user_id === user?.id && (
                 <div className="review-actions">
-                  <button onClick={() => handleEdit(r)}>编辑</button>
-                  <button onClick={() => handleDelete(r.id)}>删除</button>
+                  <button onClick={() => handleEdit(r)}>Edit</button>
+                  <button onClick={() => handleDelete(r.id)}>Delete</button>
                 </div>
               )}
             </div>

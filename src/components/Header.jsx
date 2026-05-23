@@ -3,9 +3,9 @@ export default function Header() {
     <header className="header">
       <h1 className="header-title">
         <span className="header-icon">🎬</span>
-        泰国GL电视剧追踪
+        Thai GL Series Tracker
       </h1>
-      <p className="header-sub">追踪最新播出的泰国 Girls' Love 剧集</p>
+      <p className="header-sub">Track the latest Thai Girls' Love series</p>
     </header>
   )
 }

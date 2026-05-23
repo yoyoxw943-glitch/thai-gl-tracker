@@ -37,19 +37,19 @@ export default function AuthModal({ onClose }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content auth-modal" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>&times;</button>
-        <h2 className="auth-title">{mode === 'login' ? '登录' : '注册'}</h2>
+        <h2 className="auth-title">{mode === 'login' ? 'Login' : 'Register'}</h2>
 
         {error && <div className="auth-error">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           {mode === 'register' && (
             <div className="form-group">
-              <label>用户名</label>
+              <label>Username</label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="2-20个字符"
+                placeholder="2-20 characters"
                 required
                 minLength={2}
                 maxLength={20}
@@ -57,7 +57,7 @@ export default function AuthModal({ onClose }) {
             </div>
           )}
           <div className="form-group">
-            <label>邮箱</label>
+            <label>Email</label>
             <input
               type="email"
               value={email}
@@ -67,25 +67,25 @@ export default function AuthModal({ onClose }) {
             />
           </div>
           <div className="form-group">
-            <label>密码</label>
+            <label>Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder={mode === 'register' ? '至少6个字符' : '输入密码'}
+              placeholder={mode === 'register' ? 'At least 6 characters' : 'Enter password'}
               required
               minLength={6}
             />
           </div>
           <button type="submit" className="auth-submit" disabled={submitting}>
-            {submitting ? '处理中...' : mode === 'login' ? '登录' : '注册'}
+            {submitting ? 'Processing...' : mode === 'login' ? 'Login' : 'Register'}
           </button>
         </form>
 
         <p className="auth-switch">
-          {mode === 'login' ? '还没有账号？' : '已有账号？'}
+          {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}
           <button onClick={switchMode} className="switch-btn">
-            {mode === 'login' ? '去注册' : '去登录'}
+            {mode === 'login' ? 'Register' : 'Login'}
           </button>
         </p>
       </div>
