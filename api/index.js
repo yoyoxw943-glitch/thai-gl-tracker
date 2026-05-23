@@ -188,11 +188,27 @@ async function migrateNewSeries() {
 
 // ─── Series Routes ───
 
+async function autoCompleteSeries() {
+  try {
+    const airing = await query("SELECT * FROM series WHERE status = 'airing'")
+    for (const row of airing.rows) {
+      const aired = calcAired(row)
+      if (aired >= row.total_episodes && row.total_episodes > 0) {
+        await query("UPDATE series SET status = 'completed', aired_episodes = $1 WHERE id = $2", [aired, row.id])
+        console.log(`Auto-completed: ${row.title_zh} (${aired}/${row.total_episodes})`)
+      }
+    }
+  } catch (e) {
+    console.error('Auto-complete check failed:', e.message)
+  }
+}
+
 app.get('/api/series', async (req, res) => {
   try {
     await seedIfEmpty()
     await migratePosterPaths()
     await migrateNewSeries()
+    await autoCompleteSeries()
     const result = await query('SELECT * FROM series ORDER BY sort_order ASC, start_date DESC')
     res.json({ series: result.rows.map(formatSeries) })
   } catch (e) {
@@ -326,6 +342,7 @@ app.get('/api/cron/update-aired-episodes', async (req, res) => {
   }
 
   try {
+    await autoCompleteSeries()
     const result = await query("SELECT * FROM series WHERE status = 'airing'")
     let updatedCount = 0
 
