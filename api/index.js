@@ -153,6 +153,14 @@ async function migratePosterPaths() {
   }
 }
 
+async function migrateFixHometownRomance() {
+  try {
+    await query("UPDATE series SET update_day = '周五' WHERE id = 6 AND update_day = '周四'")
+  } catch (e) {
+    // Ignore if column or row doesn't exist
+  }
+}
+
 async function migrateNewSeries() {
   const newSeries = [
     [43, '心之密码', 'Heart Code', 'รหัสลับ(รัก) มาเฟีย', '/posters/43.jpg', 'Monomax', '2026-01-12', 7, 7, '', 'Tungpang × Jessie', '蛋糕店老板Vicky是高级警官的女儿，遭遇暗杀未遂后被父亲安排参加7天VIP警察训练。在那里她遇到了救过她的Captain Thara。Mono Original 首部GL剧集。', 'completed', JSON.stringify([{platform:'Monomax',url:'https://www.monomax.me/'},{platform:'Bilibili',url:'https://search.bilibili.com/all?keyword=Heart%20Code%20Thai%20GL'}])],
@@ -207,6 +215,7 @@ app.get('/api/series', async (req, res) => {
   try {
     await seedIfEmpty()
     await migratePosterPaths()
+    await migrateFixHometownRomance()
     await migrateNewSeries()
     await autoCompleteSeries()
     const result = await query('SELECT * FROM series ORDER BY sort_order ASC, start_date DESC')

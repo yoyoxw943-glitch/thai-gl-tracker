@@ -156,7 +156,7 @@ export default [
     "startDate": "2026-04-03",
     "totalEpisodes": 8,
     "airedEpisodes": 7,
-    "updateDay": "周四",
+    "updateDay": "周五",
     "cpName": "Lookmhee × Sonya",
     "synopsis": "都市名媛 Si 被迫与乡下女孩 Klao 订婚以续租家族地产。为证明自己她住进乡村，两种截然不同的世界碰撞出爱与成长的故事。改编自小说《สามีบ้านนอก》，LMSY 第三次合作。5月22日大结局。",
     "status": "airing",
