@@ -233,7 +233,7 @@ button {
 
 .card-poster {
   position: relative;
-  aspect-ratio: 2/3;
+  aspect-ratio: 3/4;
   overflow: hidden;
   background: #1a1a28;
 }
@@ -721,7 +721,7 @@ button {
 
 .detail-layout {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 240px 1fr;
   gap: 36px;
   align-items: start;
 }
